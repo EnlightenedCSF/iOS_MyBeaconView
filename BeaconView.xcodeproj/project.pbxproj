@@ -14,6 +14,8 @@
 		84604AA31AB5DD7E006624E0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84604AA21AB5DD7E006624E0 /* Images.xcassets */; };
 		84604AA61AB5DD7E006624E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84604AA41AB5DD7E006624E0 /* LaunchScreen.xib */; };
 		84604AB21AB5DD7E006624E0 /* BeaconViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */; };
+		84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABC1AB5DE01006624E0 /* BeaconView.m */; };
+		84604AC01AB5E473006624E0 /* BPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABF1AB5E473006624E0 /* BPoint.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		84604AAB1AB5DD7E006624E0 /* BeaconViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeaconViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84604AB01AB5DD7E006624E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeaconViewTests.m; sourceTree = "<group>"; };
+		84604ABB1AB5DE01006624E0 /* BeaconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeaconView.h; sourceTree = "<group>"; };
+		84604ABC1AB5DE01006624E0 /* BeaconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconView.m; sourceTree = "<group>"; };
+		84604ABE1AB5E473006624E0 /* BPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPoint.h; sourceTree = "<group>"; };
+		84604ABF1AB5E473006624E0 /* BPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPoint.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,8 +87,10 @@
 		84604A941AB5DD7D006624E0 /* BeaconView */ = {
 			isa = PBXGroup;
 			children = (
-				84604A991AB5DD7D006624E0 /* AppDelegate.h */,
-				84604A9A1AB5DD7D006624E0 /* AppDelegate.m */,
+				84604ABE1AB5E473006624E0 /* BPoint.h */,
+				84604ABF1AB5E473006624E0 /* BPoint.m */,
+				84604ABB1AB5DE01006624E0 /* BeaconView.h */,
+				84604ABC1AB5DE01006624E0 /* BeaconView.m */,
 				84604A9C1AB5DD7D006624E0 /* ViewController.h */,
 				84604A9D1AB5DD7D006624E0 /* ViewController.m */,
 				84604A9F1AB5DD7D006624E0 /* Main.storyboard */,
@@ -96,6 +104,8 @@
 		84604A951AB5DD7D006624E0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				84604A991AB5DD7D006624E0 /* AppDelegate.h */,
+				84604A9A1AB5DD7D006624E0 /* AppDelegate.m */,
 				84604A961AB5DD7D006624E0 /* Info.plist */,
 				84604A971AB5DD7D006624E0 /* main.m */,
 			);
@@ -221,7 +231,9 @@
 			files = (
 				84604A9E1AB5DD7D006624E0 /* ViewController.m in Sources */,
 				84604A9B1AB5DD7D006624E0 /* AppDelegate.m in Sources */,
+				84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */,
 				84604A981AB5DD7D006624E0 /* main.m in Sources */,
+				84604AC01AB5E473006624E0 /* BPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +358,7 @@
 				INFOPLIST_FILE = BeaconView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -356,6 +369,7 @@
 				INFOPLIST_FILE = BeaconView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
