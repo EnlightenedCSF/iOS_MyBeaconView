@@ -6,17 +6,21 @@
 //  Copyright (c) 2015 CSF. All rights reserved.
 //
 
-#import "BPoint.h"
+#import "Beacon.h"
 
-@implementation BPoint
+@implementation Beacon
 
 -(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y {
+    return [self initWithCoordinateX:x Y:y Level:Unknown];
+}
+
+-(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y Level:(enum BeaconPower)power {
     self = [super init];
     if (self) {
         self.x = x;
         self.y = y;
+        self.beaconPower = power;
     }
     return self;
 }
-
 @end

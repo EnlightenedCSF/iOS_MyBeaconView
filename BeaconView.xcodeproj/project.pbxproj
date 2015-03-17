@@ -15,7 +15,7 @@
 		84604AA61AB5DD7E006624E0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84604AA41AB5DD7E006624E0 /* LaunchScreen.xib */; };
 		84604AB21AB5DD7E006624E0 /* BeaconViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */; };
 		84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABC1AB5DE01006624E0 /* BeaconView.m */; };
-		84604AC01AB5E473006624E0 /* BPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABF1AB5E473006624E0 /* BPoint.m */; };
+		84604AC01AB5E473006624E0 /* Beacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABF1AB5E473006624E0 /* Beacon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +44,8 @@
 		84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeaconViewTests.m; sourceTree = "<group>"; };
 		84604ABB1AB5DE01006624E0 /* BeaconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeaconView.h; sourceTree = "<group>"; };
 		84604ABC1AB5DE01006624E0 /* BeaconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconView.m; sourceTree = "<group>"; };
-		84604ABE1AB5E473006624E0 /* BPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPoint.h; sourceTree = "<group>"; };
-		84604ABF1AB5E473006624E0 /* BPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPoint.m; sourceTree = "<group>"; };
+		84604ABE1AB5E473006624E0 /* Beacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beacon.h; sourceTree = "<group>"; };
+		84604ABF1AB5E473006624E0 /* Beacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beacon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,8 +87,8 @@
 		84604A941AB5DD7D006624E0 /* BeaconView */ = {
 			isa = PBXGroup;
 			children = (
-				84604ABE1AB5E473006624E0 /* BPoint.h */,
-				84604ABF1AB5E473006624E0 /* BPoint.m */,
+				84604ABE1AB5E473006624E0 /* Beacon.h */,
+				84604ABF1AB5E473006624E0 /* Beacon.m */,
 				84604ABB1AB5DE01006624E0 /* BeaconView.h */,
 				84604ABC1AB5DE01006624E0 /* BeaconView.m */,
 				84604A9C1AB5DD7D006624E0 /* ViewController.h */,
@@ -233,7 +233,7 @@
 				84604A9B1AB5DD7D006624E0 /* AppDelegate.m in Sources */,
 				84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */,
 				84604A981AB5DD7D006624E0 /* main.m in Sources */,
-				84604AC01AB5E473006624E0 /* BPoint.m in Sources */,
+				84604AC01AB5E473006624E0 /* Beacon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +426,7 @@
 				84604AB71AB5DD7E006624E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84604AB81AB5DD7E006624E0 /* Build configuration list for PBXNativeTarget "BeaconViewTests" */ = {
 			isa = XCConfigurationList;
@@ -434,6 +435,7 @@
 				84604ABA1AB5DD7E006624E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

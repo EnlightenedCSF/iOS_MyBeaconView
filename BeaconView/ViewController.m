@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "BeaconView.h"
-#import "BPoint.h"
+#import "Beacon.h"
 
 @interface ViewController ()
 
@@ -22,9 +22,10 @@
     [super viewDidLoad];
     
     NSMutableSet *set = [[NSMutableSet alloc]initWithCapacity:3];
-    [set addObject:[[BPoint alloc] initWithCoordinateX:10 Y:10]];
-    [set addObject:[[BPoint alloc] initWithCoordinateX:90 Y:10]];
-    [set addObject:[[BPoint alloc] initWithCoordinateX:50 Y:80]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:10 Y:10 Level:Unknown]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:90 Y:10 Level:Immidiate]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:10 Y:90 Level:Near]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:90 Y:90 Level:Far]];
     
     [self.myBeaconView addBeaconPositions:set];
 }

@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+enum BeaconPower : NSInteger {
+    Unknown,
+    Immidiate,
+    Near,
+    Far
+};
+
 @interface BeaconView : UIView
 
-@property (strong, nonatomic) UIImage *beaconImage;
-@property (strong) NSMutableArray *beaconPositions; //of BPoint
+@property (strong, nonatomic) NSDictionary *beaconIcons;
+property (strong) NSMutableArray *beaconPositions; //of Beacon
 
 -(void)addBeaconPositions:(NSSet *)objects;
 

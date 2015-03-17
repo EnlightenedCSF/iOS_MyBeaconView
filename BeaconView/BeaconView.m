@@ -7,12 +7,12 @@
 //
 
 #import "BeaconView.h"
-#import "BPoint.h"
+#import "Beacon.h"
 
 @implementation BeaconView
 
 -(void)addBeaconPositions:(NSSet *)objects {
-    for (BPoint* point in objects) {
+    for (Beacon* point in objects) {
         [self.beaconPositions addObject:point];
         NSLog(@"Added");
     }
@@ -39,18 +39,21 @@
 }
 
 -(void)setup {
-    self.beaconImage = [UIImage imageNamed:@"icon"];
+//    self.beaconImageUnknown = [UIImage imageNamed:@"icon"];
     self.beaconPositions = [[NSMutableArray alloc] init];
     
-    NSLog(@"Image is %@", self.beaconImage);
+    self.beaconIcons = @{ [NSNumber numberWithInt:Unknown]: [UIImage imageNamed:@"icon"],
+                          [NSNumber numberWithInt:Immidiate]: [UIImage imageNamed:@"icon_green"],
+                          [NSNumber numberWithInt:Near]: [UIImage imageNamed:@"icon_yellow"],
+                          [NSNumber numberWithInt:Far]: [UIImage imageNamed:@"icon_red"]
+                          };
 }
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    for (BPoint* point in self.beaconPositions) {
-        [self.beaconImage drawAtPoint:CGPointMake( [self convertX:point.x], [self convertY:point.y] )];
+    for (Beacon* point in self.beaconPositions) {
+        [[self.beaconIcons objectForKey:[NSNumber numberWithInt:point.beaconPower]] drawAtPoint:CGPointMake([self convertX:point.x], [self convertY:point.y])];
     }
-    [self.beaconImage drawAtPoint:CGPointMake(10, 10)];
 }
 
 
