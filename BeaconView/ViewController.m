@@ -21,7 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.myBeaconView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.myBeaconView action:@selector(pan:)]];
+    [self.myBeaconView addGestureRecognizer:[[UIPanGestureRecognizer alloc]
+                                             initWithTarget:self.myBeaconView action:@selector(pan:)]];
+    
+    [self.myBeaconView addGestureRecognizer:[[UIPinchGestureRecognizer alloc]
+                                             initWithTarget:self.myBeaconView action:@selector(pinch:)]];
 }
 
 

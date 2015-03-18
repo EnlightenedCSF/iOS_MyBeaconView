@@ -24,6 +24,7 @@ enum BeaconPower : NSInteger {
 @property (nonatomic) double userX;
 @property (nonatomic) double userY;
 
--(void)pan:(UIPanGestureRecognizer *)pan;
+-(void)pan:(UIPanGestureRecognizer *)gesture;
+-(void)pinch:(UIPinchGestureRecognizer *)gesture;
 
 @end

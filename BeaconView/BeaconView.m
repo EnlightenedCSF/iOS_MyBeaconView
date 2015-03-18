@@ -95,15 +95,29 @@ CGPoint touchLocation;
                       room.rect.size.width * PIXELS_PER_METER, room.rect.size.height * PIXELS_PER_METER);
 }
 
--(void)pan:(UIPanGestureRecognizer *)pan {
-    if (pan.state == UIGestureRecognizerStateBegan) {
-        touchLocation = [pan locationInView:self];
+-(void)pan:(UIPanGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        touchLocation = [gesture locationInView:self];
     }
-    else if ((pan.state == UIGestureRecognizerStateChanged) ||
-             (pan.state == UIGestureRecognizerStateEnded)) {
-        anchorX += [pan locationInView:self].x - touchLocation.x;
-        anchorY += [pan locationInView:self].y - touchLocation.y;
-        touchLocation = [pan locationInView:self];
+    else if ((gesture.state == UIGestureRecognizerStateChanged) ||
+             (gesture.state == UIGestureRecognizerStateEnded)) {
+        anchorX += [gesture locationInView:self].x - touchLocation.x;
+        anchorY += [gesture locationInView:self].y - touchLocation.y;
+        touchLocation = [gesture locationInView:self];
+        [self setNeedsDisplay];
+    }
+}
+
+-(void)pinch:(UIPinchGestureRecognizer *)gesture {
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        double lastValue = PIXELS_PER_METER;
+        PIXELS_PER_METER *= gesture.scale;
+        
+        anchorX -= 2*(PIXELS_PER_METER - lastValue);
+        anchorY -= 2*(PIXELS_PER_METER - lastValue);
+        
+        gesture.scale = 1.0;
         [self setNeedsDisplay];
     }
 }
