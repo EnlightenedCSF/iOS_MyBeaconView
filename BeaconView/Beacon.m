@@ -10,11 +10,11 @@
 
 @implementation Beacon
 
--(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y {
+-(id)initWithCoordinateX:(double)x Y:(double)y {
     return [self initWithCoordinateX:x Y:y Level:Unknown];
 }
 
--(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y Level:(enum BeaconPower)power {
+-(id)initWithCoordinateX:(double)x Y:(double)y Level:(enum BeaconPower)power {
     self = [super init];
     if (self) {
         self.x = x;

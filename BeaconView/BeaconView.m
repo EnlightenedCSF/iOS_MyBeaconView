@@ -8,22 +8,26 @@
 
 #import "BeaconView.h"
 #import "Beacon.h"
+#import "Room.h"
 
 @implementation BeaconView
 
--(void)addBeaconPositions:(NSSet *)objects {
-    for (Beacon* point in objects) {
-        [self.beaconPositions addObject:point];
-        NSLog(@"Added");
-    }
+double PIXELS_PER_METER = 80.0;
+double anchorX = 0.0;
+double anchorY = 0.0;
+
+CGPoint touchLocation;
+
+-(CGFloat)convertBeaconX:(double)x {
+    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:Immidiate]];
+    double halfWidth = icon.size.width / 2.0;
+    return x * PIXELS_PER_METER - halfWidth + anchorX;
 }
 
--(CGFloat)convertX:(NSInteger)x {
-    return self.bounds.size.width / 100.0f * x;
-}
-
--(CGFloat)convertY:(NSInteger)y {
-    return self.bounds.size.height / 100.0f * y;
+-(CGFloat)convertBeaconY:(double)y {
+    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:Immidiate]];
+    double halfHeight = icon.size.height / 2.0;
+    return PIXELS_PER_METER * y - halfHeight + anchorY;
 }
 
 -(id)initWithFrame:(CGRect)frame {
@@ -39,23 +43,69 @@
 }
 
 -(void)setup {
-//    self.beaconImageUnknown = [UIImage imageNamed:@"icon"];
-    self.beaconPositions = [[NSMutableArray alloc] init];
+    NSLog(@"The sizes of the component: X:%f; Y:%f", self.bounds.size.width, self.bounds.size.height);
+    
+    self.userIcon = [UIImage imageNamed:@"icon_user"];
+    self.userX = 50;
+    self.userY = 50;
     
     self.beaconIcons = @{ [NSNumber numberWithInt:Unknown]: [UIImage imageNamed:@"icon"],
                           [NSNumber numberWithInt:Immidiate]: [UIImage imageNamed:@"icon_green"],
                           [NSNumber numberWithInt:Near]: [UIImage imageNamed:@"icon_yellow"],
                           [NSNumber numberWithInt:Far]: [UIImage imageNamed:@"icon_red"]
                           };
+    
+    NSMutableSet *set = [[NSMutableSet alloc]initWithCapacity:3];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:0.5 Level:Unknown]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:0.5 Level:Immidiate]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:3 Level:Near]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:3 Level:Far]];
+    
+    Room *room = [[Room alloc] initWithX:0.5 Y:0.5 Width:3 Height:3.5];
+    [room addBeaconPositions:set];
+    
+    self.rooms = [NSMutableArray arrayWithObject:room];
 }
 
 - (void)drawRect:(CGRect)rect {
+    UIGraphicsGetCurrentContext();
+    
+    [[UIColor colorWithRed:220.0/255.0 green:237.0/255.0 blue:250.0/255.0 alpha:1] setFill];
+    [[UIColor blackColor] setStroke];
+    
     // Drawing code
-    for (Beacon* point in self.beaconPositions) {
-        [[self.beaconIcons objectForKey:[NSNumber numberWithInt:point.beaconPower]] drawAtPoint:CGPointMake([self convertX:point.x], [self convertY:point.y])];
+    for (Room *room in self.rooms) {
+        UIBezierPath* roomContour = [UIBezierPath bezierPathWithRect:[self getDrawableRectFromRoom:room]];
+        roomContour.lineWidth = 2;
+        [roomContour fill];
+        [roomContour stroke];
+        
+        for (Beacon *beacon in room.beaconPositions) {
+            [[self.beaconIcons objectForKey:[NSNumber numberWithInt:beacon.beaconPower]]
+                drawAtPoint:CGPointMake([self convertBeaconX:(beacon.x + room.rect.origin.x)],
+                                        [self convertBeaconY:(beacon.y + room.rect.origin.y)])];
+        }
     }
+    
+    [self.userIcon drawAtPoint:CGPointMake(self.userX + anchorX, self.userY + anchorY)];
 }
 
+-(CGRect)getDrawableRectFromRoom:(Room *)room {
+    return CGRectMake(room.rect.origin.x * PIXELS_PER_METER + anchorX, room.rect.origin.y * PIXELS_PER_METER + anchorY,
+                      room.rect.size.width * PIXELS_PER_METER, room.rect.size.height * PIXELS_PER_METER);
+}
 
+-(void)pan:(UIPanGestureRecognizer *)pan {
+    if (pan.state == UIGestureRecognizerStateBegan) {
+        touchLocation = [pan locationInView:self];
+    }
+    else if ((pan.state == UIGestureRecognizerStateChanged) ||
+             (pan.state == UIGestureRecognizerStateEnded)) {
+        anchorX += [pan locationInView:self].x - touchLocation.x;
+        anchorY += [pan locationInView:self].y - touchLocation.y;
+        touchLocation = [pan locationInView:self];
+        [self setNeedsDisplay];
+    }
+}
 
 @end

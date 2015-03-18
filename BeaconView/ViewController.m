@@ -21,13 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSMutableSet *set = [[NSMutableSet alloc]initWithCapacity:3];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:10 Y:10 Level:Unknown]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:90 Y:10 Level:Immidiate]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:10 Y:90 Level:Near]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:90 Y:90 Level:Far]];
-    
-    [self.myBeaconView addBeaconPositions:set];
+    [self.myBeaconView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.myBeaconView action:@selector(pan:)]];
 }
+
 
 @end

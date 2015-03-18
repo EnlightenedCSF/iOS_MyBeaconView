@@ -11,11 +11,11 @@
 
 @interface Beacon : NSObject
 
-@property (nonatomic)NSInteger x;
-@property (nonatomic)NSInteger y;
+@property (nonatomic)double x;
+@property (nonatomic)double y;
 @property (nonatomic)enum BeaconPower beaconPower;
 
--(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y;
--(id)initWithCoordinateX:(NSInteger)x Y:(NSInteger)y Level:(enum BeaconPower)power;
+-(id)initWithCoordinateX:(double)x Y:(double)y;
+-(id)initWithCoordinateX:(double)x Y:(double)y Level:(enum BeaconPower)power;
     
 @end

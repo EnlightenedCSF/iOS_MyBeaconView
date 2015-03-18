@@ -17,9 +17,13 @@ enum BeaconPower : NSInteger {
 
 @interface BeaconView : UIView
 
+@property (strong, nonatomic) UIImage *userIcon; 
 @property (strong, nonatomic) NSDictionary *beaconIcons;
-property (strong) NSMutableArray *beaconPositions; //of Beacon
+@property (strong) NSMutableArray *rooms; // of Room
 
--(void)addBeaconPositions:(NSSet *)objects;
+@property (nonatomic) double userX;
+@property (nonatomic) double userY;
+
+-(void)pan:(UIPanGestureRecognizer *)pan;
 
 @end

@@ -16,6 +16,7 @@
 		84604AB21AB5DD7E006624E0 /* BeaconViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */; };
 		84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABC1AB5DE01006624E0 /* BeaconView.m */; };
 		84604AC01AB5E473006624E0 /* Beacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABF1AB5E473006624E0 /* Beacon.m */; };
+		84A91DA61AB9865D002036FD /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A91DA51AB9865D002036FD /* Room.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,8 @@
 		84604ABC1AB5DE01006624E0 /* BeaconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconView.m; sourceTree = "<group>"; };
 		84604ABE1AB5E473006624E0 /* Beacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Beacon.h; sourceTree = "<group>"; };
 		84604ABF1AB5E473006624E0 /* Beacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Beacon.m; sourceTree = "<group>"; };
+		84A91DA41AB9865D002036FD /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		84A91DA51AB9865D002036FD /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,8 @@
 			children = (
 				84604ABE1AB5E473006624E0 /* Beacon.h */,
 				84604ABF1AB5E473006624E0 /* Beacon.m */,
+				84A91DA41AB9865D002036FD /* Room.h */,
+				84A91DA51AB9865D002036FD /* Room.m */,
 				84604ABB1AB5DE01006624E0 /* BeaconView.h */,
 				84604ABC1AB5DE01006624E0 /* BeaconView.m */,
 				84604A9C1AB5DD7D006624E0 /* ViewController.h */,
@@ -229,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A91DA61AB9865D002036FD /* Room.m in Sources */,
 				84604A9E1AB5DD7D006624E0 /* ViewController.m in Sources */,
 				84604A9B1AB5DD7D006624E0 /* AppDelegate.m in Sources */,
 				84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */,
