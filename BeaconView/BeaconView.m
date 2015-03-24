@@ -19,15 +19,25 @@ double anchorY = 0.0;
 CGPoint touchLocation;
 
 -(CGFloat)convertBeaconX:(double)x {
-    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:Immidiate]];
+    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
     double halfWidth = icon.size.width / 2.0;
     return x * PIXELS_PER_METER - halfWidth + anchorX;
 }
 
 -(CGFloat)convertBeaconY:(double)y {
-    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:Immidiate]];
+    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
     double halfHeight = icon.size.height / 2.0;
     return PIXELS_PER_METER * y - halfHeight + anchorY;
+}
+
+-(CGFloat)convertUserX:(double)x {
+    double halfWidth = self.userIcon.size.width / 2.0;
+    return x * PIXELS_PER_METER - halfWidth + anchorX;
+}
+
+-(CGFloat)convertUserY:(double)y {
+    double height = self.userIcon.size.height;
+    return y * PIXELS_PER_METER - height + anchorY;
 }
 
 -(id)initWithFrame:(CGRect)frame {
@@ -46,20 +56,20 @@ CGPoint touchLocation;
     NSLog(@"The sizes of the component: X:%f; Y:%f", self.bounds.size.width, self.bounds.size.height);
     
     self.userIcon = [UIImage imageNamed:@"icon_user"];
-    self.userX = 50;
-    self.userY = 50;
+    self.userX = 1.5;
+    self.userY = 1.5;
     
-    self.beaconIcons = @{ [NSNumber numberWithInt:Unknown]: [UIImage imageNamed:@"icon"],
-                          [NSNumber numberWithInt:Immidiate]: [UIImage imageNamed:@"icon_green"],
-                          [NSNumber numberWithInt:Near]: [UIImage imageNamed:@"icon_yellow"],
-                          [NSNumber numberWithInt:Far]: [UIImage imageNamed:@"icon_red"]
+    self.beaconIcons = @{ [NSNumber numberWithInt:CLProximityUnknown]: [UIImage imageNamed:@"icon"],
+                          [NSNumber numberWithInt:CLProximityImmediate]: [UIImage imageNamed:@"icon_green"],
+                          [NSNumber numberWithInt:CLProximityNear]: [UIImage imageNamed:@"icon_yellow"],
+                          [NSNumber numberWithInt:CLProximityFar]: [UIImage imageNamed:@"icon_red"]
                           };
     
     NSMutableSet *set = [[NSMutableSet alloc]initWithCapacity:3];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:0.5 Level:Unknown]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:0.5 Level:Immidiate]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:3 Level:Near]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:3 Level:Far]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:0.5 Level:CLProximityUnknown]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:0.5 Level:CLProximityImmediate]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:3 Level:CLProximityNear]];
+    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:3 Level:CLProximityFar]];
     
     Room *room = [[Room alloc] initWithX:0.5 Y:0.5 Width:3 Height:3.5];
     [room addBeaconPositions:set];
@@ -87,7 +97,7 @@ CGPoint touchLocation;
         }
     }
     
-    [self.userIcon drawAtPoint:CGPointMake(self.userX + anchorX, self.userY + anchorY)];
+    [self.userIcon drawAtPoint:CGPointMake([self convertUserX:self.userX], [self convertUserY:self.userY])];
 }
 
 -(CGRect)getDrawableRectFromRoom:(Room *)room {

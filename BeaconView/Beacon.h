@@ -8,14 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "BeaconView.h"
+@import CoreLocation;
 
 @interface Beacon : NSObject
 
 @property (nonatomic)double x;
 @property (nonatomic)double y;
-@property (nonatomic)enum BeaconPower beaconPower;
+@property (nonatomic)CLProximity beaconPower;
 
 -(id)initWithCoordinateX:(double)x Y:(double)y;
--(id)initWithCoordinateX:(double)x Y:(double)y Level:(enum BeaconPower)power;
+-(id)initWithCoordinateX:(double)x Y:(double)y Level:(CLProximity)power;
     
 @end

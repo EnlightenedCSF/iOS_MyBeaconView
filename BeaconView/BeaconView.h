@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-enum BeaconPower : NSInteger {
+/*enum BeaconPower : NSInteger {
     Unknown,
     Immidiate,
     Near,
     Far
-};
+};*/
 
 @interface BeaconView : UIView
 
