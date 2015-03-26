@@ -79,6 +79,11 @@
                             <outlet property="delegate" destination="ZS2-LO-bSn" id="iPF-pQ-U3g"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="beaconTable" destination="ft3-yj-zPf" id="ILU-YY-VRo"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wkz-qi-oey" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

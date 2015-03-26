@@ -7,10 +7,18 @@
 //
 
 #import "BeaconRangingViewController.h"
+#import "BeaconDefaults.h"
+@import CoreLocation;
 
-@interface BeaconRangingViewController ()
+@interface BeaconRangingViewController () <CLLocationManagerDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *beaconTable;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *console;
 
 @property NSMutableDictionary *beacons;
+@property NSMutableArray *arrayBeacons;
+@property CLBeaconRegion *region;
+@property CLLocationManager *manager;
 
 @end
 
@@ -19,20 +27,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.manager = [[CLLocationManager alloc] init];
+    self.manager.delegate = self;
+    
     self.beacons = [[NSMutableDictionary alloc] init];
-    self.beacons[@"yourMom"] = @15;
-    self.beacons[@"yourDad"] = @19;
+    self.arrayBeacons = [[NSMutableArray alloc] init];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSUUID *uuid = [BeaconDefaults sharedData].uuid;
+    self.region = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier:[uuid UUIDString]];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self.manager startMonitoringForRegion:self.region];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [self.manager stopMonitoringForRegion:self.region];
 }
 
 #pragma mark - Table view data source
@@ -42,61 +56,42 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.beacons.count;
+    return self.arrayBeacons.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *tableCell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
  
-    tableCell.textLabel.text = [[self.beacons allKeys] objectAtIndex:indexPath.row];
-    tableCell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [[self.beacons allValues] objectAtIndex:indexPath.row]];
+    //tableCell.textLabel.text = [[self.beacons allKeys] objectAtIndex:indexPath.row];
+    //tableCell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [[self.beacons allValues] objectAtIndex:indexPath.row]];
+    
+    
+    CLBeacon *beacon = [self.arrayBeacons objectAtIndex:indexPath.row];
+    tableCell.textLabel.text = [NSString stringWithFormat:@"Major: %@    Minor: %@", beacon.major, beacon.minor];
+    
+    self.console.title = [NSString stringWithFormat:@"%d", [self.arrayBeacons count]];
     
     return tableCell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+#pragma mark - Location manager delegate
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+-(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    [self.beacons removeAllObjects];
+    [self.arrayBeacons removeAllObjects];
+    
+    [self.arrayBeacons addObjectsFromArray:beacons];
+    
+    /*for (NSNumber *proximity in @[@(CLProximityUnknown), @(CLProximityImmediate), @(CLProximityNear), @(CLProximityFar)]) {
+        NSArray* array = [beacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [proximity intValue]]];
+        if ([array count]) {
+            self.beacons[proximity] = array;
+        }
+    }*/
+    
+    
+    [self.beaconTable reloadData];
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
