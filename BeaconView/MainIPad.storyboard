@@ -21,7 +21,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.88091076799575407" blue="0.52637840905521838" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="FBL-0A-0CV" secondAttribute="trailing" id="Tdr-AP-Bnr"/>
                             <constraint firstItem="gIJ-RH-z55" firstAttribute="top" secondItem="FBL-0A-0CV" secondAttribute="bottom" id="Yf2-NX-Wgf"/>
@@ -30,9 +29,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Csk-fS-aaz">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="UTK-lh-AC6">
+                        <barButtonItem key="rightBarButtonItem" title="Show Beacons" id="UTK-lh-AC6">
                             <connections>
-                                <segue destination="ZS2-LO-bSn" kind="show" id="tEe-9I-gn4"/>
+                                <segue destination="CbK-pU-BYo" kind="show" id="pIo-Ok-Gg9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -45,49 +44,34 @@
             <point key="canvasLocation" x="1435" y="369"/>
         </scene>
         <!--Beacon Ranging View Controller-->
-        <scene sceneID="wH3-9L-mre">
+        <scene sceneID="lXq-eR-01a">
             <objects>
-                <tableViewController id="ZS2-LO-bSn" customClass="BeaconRangingViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ft3-yj-zPf">
+                <viewController id="CbK-pU-BYo" customClass="BeaconRangingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gXd-0r-mEe"/>
+                        <viewControllerLayoutGuide type="bottom" id="M0I-Hz-aKb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EJn-e0-z9X">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Voy-JT-epF">
+                                <rect key="frame" x="16" y="115" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="epJ-wK-VcX" detailTextLabel="Op3-Ee-RAu" style="IBUITableViewCellStyleSubtitle" id="Zw9-Gs-kJc">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zw9-Gs-kJc" id="hEx-Wy-qpm">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="epJ-wK-VcX">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Op3-Ee-RAu">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="ZS2-LO-bSn" id="pHb-VV-et0"/>
-                            <outlet property="delegate" destination="ZS2-LO-bSn" id="iPF-pQ-U3g"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    </view>
                     <connections>
-                        <outlet property="beaconTable" destination="ft3-yj-zPf" id="ILU-YY-VRo"/>
+                        <outlet property="info" destination="Voy-JT-epF" id="Sbd-Ep-fqH"/>
+                        <outlet property="testLbl" destination="Voy-JT-epF" id="eww-nr-Bbv"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wkz-qi-oey" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A0R-8q-omK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2133" y="369"/>
+            <point key="canvasLocation" x="2100" y="369"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xGN-9E-sZj">

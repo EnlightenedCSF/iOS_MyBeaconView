@@ -12,11 +12,11 @@
 
 @interface BeaconRangingViewController () <CLLocationManagerDelegate>
 
-@property (strong, nonatomic) IBOutlet UITableView *beaconTable;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *console;
+@property (weak, nonatomic) IBOutlet UILabel *info;
 
-@property NSMutableDictionary *beacons;
-@property NSMutableArray *arrayBeacons;
+@property (weak, nonatomic) IBOutlet UILabel *testLbl;
+
+//@property NSMutableDictionary *beacons;
 @property CLBeaconRegion *region;
 @property CLLocationManager *manager;
 
@@ -27,71 +27,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.manager = [[CLLocationManager alloc] init];
+    self.manager = [CLLocationManager new];
     self.manager.delegate = self;
-    
-    self.beacons = [[NSMutableDictionary alloc] init];
-    self.arrayBeacons = [[NSMutableArray alloc] init];
+    [self.manager requestWhenInUseAuthorization];
     
     NSUUID *uuid = [BeaconDefaults sharedData].uuid;
     self.region = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier:[uuid UUIDString]];
+    self.region.notifyEntryStateOnDisplay = YES;
+    
+    //self.beacons = [NSMutableDictionary new];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.manager startMonitoringForRegion:self.region];
+    [self.manager startRangingBeaconsInRegion:self.region];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [self.manager stopMonitoringForRegion:self.region];
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.arrayBeacons.count;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *tableCell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
- 
-    //tableCell.textLabel.text = [[self.beacons allKeys] objectAtIndex:indexPath.row];
-    //tableCell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [[self.beacons allValues] objectAtIndex:indexPath.row]];
-    
-    
-    CLBeacon *beacon = [self.arrayBeacons objectAtIndex:indexPath.row];
-    tableCell.textLabel.text = [NSString stringWithFormat:@"Major: %@    Minor: %@", beacon.major, beacon.minor];
-    
-    self.console.title = [NSString stringWithFormat:@"%d", [self.arrayBeacons count]];
-    
-    return tableCell;
+    [self.manager stopRangingBeaconsInRegion:self.region];
 }
 
 #pragma mark - Location manager delegate
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
-    [self.beacons removeAllObjects];
-    [self.arrayBeacons removeAllObjects];
     
-    [self.arrayBeacons addObjectsFromArray:beacons];
+    self.testLbl.text = [NSString stringWithFormat:@"%lu", (unsigned long)beacons.count];
+
     
-    /*for (NSNumber *proximity in @[@(CLProximityUnknown), @(CLProximityImmediate), @(CLProximityNear), @(CLProximityFar)]) {
-        NSArray* array = [beacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [proximity intValue]]];
-        if ([array count]) {
-            self.beacons[proximity] = array;
+    
+    /*[self.beacons removeAllObjects];
+    for (NSNumber *prox in @[@(CLProximityUnknown), @(CLProximityImmediate), @(CLProximityNear), @(CLProximityFar)]) {
+        NSArray *proxBeacons = [beacons filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"proximity = %d", [prox intValue]]];
+        if ([proxBeacons count]) {
+            self.beacons[prox] = proxBeacons;
         }
+            
     }*/
-    
-    
-    [self.beaconTable reloadData];
 }
 
 @end

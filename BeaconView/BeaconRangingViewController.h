@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BeaconRangingViewController : UITableViewController
+@interface BeaconRangingViewController : UIViewController
 
 @end

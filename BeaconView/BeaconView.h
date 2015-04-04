@@ -7,22 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-/*enum BeaconPower : NSInteger {
-    Unknown,
-    Immidiate,
-    Near,
-    Far
-};*/
+#import "Floor.h"
 
 @interface BeaconView : UIView
 
 @property (strong, nonatomic) UIImage *userIcon; 
 @property (strong, nonatomic) NSDictionary *beaconIcons;
-@property (strong) NSMutableArray *rooms; // of Room
 
-@property (nonatomic) double userX;
-@property (nonatomic) double userY;
+@property (nonatomic) Floor *floor;
 
 -(void)pan:(UIPanGestureRecognizer *)gesture;
 -(void)pinch:(UIPinchGestureRecognizer *)gesture;

@@ -7,38 +7,47 @@
 //
 
 #import "BeaconView.h"
-#import "Beacon.h"
+#import "RoomBeacon.h"
+#import "Floor.h"
 #import "Room.h"
+
+@interface BeaconView()
+
+@property (nonatomic) double anchorX;
+@property (nonatomic) double anchorY;
+
+@end
 
 @implementation BeaconView
 
+double ROOM_CONTOUR_LINE_WIDTH = 2;
 double PIXELS_PER_METER = 80.0;
-double anchorX = 0.0;
-double anchorY = 0.0;
+double BEACON_ICON_HALF_WIDTH;
+double BEACON_ICON_HALF_HEIGHT;
+double USER_ICON_HALF_WIDTH;
+double USER_ICON_HEIGHT;
 
 CGPoint touchLocation;
 
+#pragma mark - Coordinates conversion
+
 -(CGFloat)convertBeaconX:(double)x {
-    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
-    double halfWidth = icon.size.width / 2.0;
-    return x * PIXELS_PER_METER - halfWidth + anchorX;
+    return x * PIXELS_PER_METER - BEACON_ICON_HALF_WIDTH + _anchorX;
 }
 
 -(CGFloat)convertBeaconY:(double)y {
-    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
-    double halfHeight = icon.size.height / 2.0;
-    return PIXELS_PER_METER * y - halfHeight + anchorY;
+    return PIXELS_PER_METER * y - BEACON_ICON_HALF_HEIGHT + _anchorY;
 }
 
 -(CGFloat)convertUserX:(double)x {
-    double halfWidth = self.userIcon.size.width / 2.0;
-    return x * PIXELS_PER_METER - halfWidth + anchorX;
+    return x * PIXELS_PER_METER - USER_ICON_HALF_WIDTH + _anchorX;
 }
 
 -(CGFloat)convertUserY:(double)y {
-    double height = self.userIcon.size.height;
-    return y * PIXELS_PER_METER - height + anchorY;
+    return y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY;
 }
+
+#pragma mark - Initialization
 
 -(id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -53,29 +62,34 @@ CGPoint touchLocation;
 }
 
 -(void)setup {
-    NSLog(@"The sizes of the component: X:%f; Y:%f", self.bounds.size.width, self.bounds.size.height);
+    _anchorX = 0;
+    _anchorY = 0;
     
     self.userIcon = [UIImage imageNamed:@"icon_user"];
-    self.userX = 1.5;
-    self.userY = 1.5;
-    
     self.beaconIcons = @{ [NSNumber numberWithInt:CLProximityUnknown]: [UIImage imageNamed:@"icon"],
                           [NSNumber numberWithInt:CLProximityImmediate]: [UIImage imageNamed:@"icon_green"],
                           [NSNumber numberWithInt:CLProximityNear]: [UIImage imageNamed:@"icon_yellow"],
                           [NSNumber numberWithInt:CLProximityFar]: [UIImage imageNamed:@"icon_red"]
                           };
     
-    NSMutableSet *set = [[NSMutableSet alloc]initWithCapacity:3];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:0.5 Level:CLProximityUnknown]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:0.5 Level:CLProximityImmediate]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:0.5 Y:3 Level:CLProximityNear]];
-    [set addObject:[[Beacon alloc] initWithCoordinateX:2.5 Y:3 Level:CLProximityFar]];
+    UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
+    BEACON_ICON_HALF_WIDTH = icon.size.width / 2.0;
+    BEACON_ICON_HALF_HEIGHT = icon.size.height / 2.0;
+    USER_ICON_HALF_WIDTH = self.userIcon.size.width / 2.0;
+    USER_ICON_HEIGHT = self.userIcon.size.height;
     
-    Room *room = [[Room alloc] initWithX:0.5 Y:0.5 Width:3 Height:3.5];
-    [room addBeaconPositions:set];
+    NSMutableArray *rooms = [[NSMutableArray alloc] initWithObjects:
+                             [[Room alloc] initWithRect:CGRectMake(0.5, 0.5, 3, 3.5)], nil];
     
-    self.rooms = [NSMutableArray arrayWithObject:room];
+    NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
+                               [[RoomBeacon alloc] initWithCoordinateX:1   Y:1 major:1 minor:3],
+                               [[RoomBeacon alloc] initWithCoordinateX:2.5 Y:1 major:1 minor:4], nil];
+    
+    
+    self.floor = [[Floor alloc] initWithRooms:rooms Beacons:beacons UserPosition:CGPointMake(2, 2)];
 }
+
+#pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect {
     UIGraphicsGetCurrentContext();
@@ -83,27 +97,59 @@ CGPoint touchLocation;
     [[UIColor colorWithRed:220.0/255.0 green:237.0/255.0 blue:250.0/255.0 alpha:1] setFill];
     [[UIColor blackColor] setStroke];
     
-    // Drawing code
-    for (Room *room in self.rooms) {
-        UIBezierPath* roomContour = [UIBezierPath bezierPathWithRect:[self getDrawableRectFromRoom:room]];
-        roomContour.lineWidth = 2;
+    for (Room *room in self.floor.rooms) {
+        UIBezierPath *roomContour = [UIBezierPath bezierPathWithRect:[self getDrawableRectFromRoom:room]];
+        roomContour.lineWidth = ROOM_CONTOUR_LINE_WIDTH;
         [roomContour fill];
         [roomContour stroke];
-        
-        for (Beacon *beacon in room.beaconPositions) {
-            [[self.beaconIcons objectForKey:[NSNumber numberWithInt:beacon.beaconPower]]
-                drawAtPoint:CGPointMake([self convertBeaconX:(beacon.x + room.rect.origin.x)],
-                                        [self convertBeaconY:(beacon.y + room.rect.origin.y)])];
-        }
     }
     
-    [self.userIcon drawAtPoint:CGPointMake([self convertUserX:self.userX], [self convertUserY:self.userY])];
+    
+    for (RoomBeacon *beacon in self.floor.beacons) {
+    
+        [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.4] setFill];
+        UIBezierPath *radius = [UIBezierPath bezierPathWithOvalInRect:[self getDrawableRectForBeacon:beacon]];
+        [radius fill];
+        
+        [[self.beaconIcons objectForKey:[NSNumber numberWithInt:beacon.proximity]]
+         drawAtPoint:CGPointMake([self convertBeaconX:beacon.x], [self convertBeaconY:beacon.y])];
+        
+        [self drawLabelsForBeacon:beacon];
+    }
+    
+    [self.userIcon drawAtPoint:CGPointMake([self convertUserX:self.floor.userPosition.x], [self convertUserY:self.floor.userPosition.y])];    
+}
+
+
+-(void)drawLabelsForBeacon:(RoomBeacon *)beacon {
+    CGPoint p = CGPointMake([self convertBeaconX:beacon.x], [self convertBeaconY:beacon.y]);
+    
+    p.y -= 5;
+    NSAttributedString *accuracyLabel = [[NSAttributedString alloc]
+                                         initWithString:[NSString stringWithFormat:@"%f", beacon.accuracy]];
+    [accuracyLabel drawAtPoint:p];
+    
+    p.x += 15;
+    p.y += 20;
+    NSAttributedString *label = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", beacon.minor]];
+    [label drawAtPoint:p];
 }
 
 -(CGRect)getDrawableRectFromRoom:(Room *)room {
-    return CGRectMake(room.rect.origin.x * PIXELS_PER_METER + anchorX, room.rect.origin.y * PIXELS_PER_METER + anchorY,
-                      room.rect.size.width * PIXELS_PER_METER, room.rect.size.height * PIXELS_PER_METER);
+    return CGRectMake(room.rect.origin.x * PIXELS_PER_METER + _anchorX,
+                      room.rect.origin.y * PIXELS_PER_METER + _anchorY,
+                      room.rect.size.width * PIXELS_PER_METER,
+                      room.rect.size.height * PIXELS_PER_METER);
 }
+
+-(CGRect)getDrawableRectForBeacon:(RoomBeacon *)beacon {
+    double r = beacon.accuracy * PIXELS_PER_METER;
+    double x = [self convertBeaconX:beacon.x] + BEACON_ICON_HALF_WIDTH;
+    double y = [self convertBeaconY:beacon.y] + BEACON_ICON_HALF_HEIGHT;
+    return CGRectMake(x - r/2.0, y - r/2.0, r, r);
+}
+
+#pragma mark - Gestures
 
 -(void)pan:(UIPanGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan) {
@@ -111,8 +157,8 @@ CGPoint touchLocation;
     }
     else if ((gesture.state == UIGestureRecognizerStateChanged) ||
              (gesture.state == UIGestureRecognizerStateEnded)) {
-        anchorX += [gesture locationInView:self].x - touchLocation.x;
-        anchorY += [gesture locationInView:self].y - touchLocation.y;
+        _anchorX += [gesture locationInView:self].x - touchLocation.x;
+        _anchorY += [gesture locationInView:self].y - touchLocation.y;
         touchLocation = [gesture locationInView:self];
         [self setNeedsDisplay];
     }
@@ -124,8 +170,8 @@ CGPoint touchLocation;
         double lastValue = PIXELS_PER_METER;
         PIXELS_PER_METER *= gesture.scale;
         
-        anchorX -= 2*(PIXELS_PER_METER - lastValue);
-        anchorY -= 2*(PIXELS_PER_METER - lastValue);
+        _anchorX -= 2*(PIXELS_PER_METER - lastValue);
+        _anchorY -= 2*(PIXELS_PER_METER - lastValue);
         
         gesture.scale = 1.0;
         [self setNeedsDisplay];

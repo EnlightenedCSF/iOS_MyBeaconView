@@ -30,6 +30,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Do you allow BeaconView to use your Location Data?</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

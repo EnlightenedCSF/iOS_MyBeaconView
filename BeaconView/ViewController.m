@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "BeaconView.h"
-#import "Beacon.h"
+#import "RoomBeacon.h"
 
 @interface ViewController ()
 
