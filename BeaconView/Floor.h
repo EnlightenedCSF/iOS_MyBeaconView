@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSMutableArray *rooms; // of Room
 @property (nonatomic, strong) NSMutableArray *beacons; //of Beacon
 
+@property (nonatomic) BOOL canDefineUserPosition;
 @property (nonatomic) CGPoint userPosition;
 @property (nonatomic) NSNumber *accuracy;
 

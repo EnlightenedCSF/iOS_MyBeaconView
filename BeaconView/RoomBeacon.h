@@ -12,15 +12,19 @@
 
 @interface RoomBeacon : NSObject
 
-@property (nonatomic, readonly) double x;
-@property (nonatomic, readonly) double y;
+@property (nonatomic, readonly) NSArray *pos;
+@property (nonatomic, readonly) double h;
 
 @property (nonatomic, readonly) NSNumber *major;
 @property (nonatomic, readonly) NSNumber *minor;
 
+@property (nonatomic) NSInteger rssi;
 @property (nonatomic) CLProximity proximity;
-@property (nonatomic) CLLocationAccuracy accuracy;
 
--(id)initWithCoordinateX:(double) x Y: (double)y major:(int)major minor:(int)minor;
+@property (nonatomic) double accuracy;
+@property (nonatomic) double lastMeasurment;
+@property (nonatomic) double distance;
+
+-(id)initWithPosition:(NSArray *) pos height:(double)h major:(int)major minor:(int)minor;
 
 @end

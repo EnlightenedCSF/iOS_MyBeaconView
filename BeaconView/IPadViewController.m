@@ -14,6 +14,9 @@
 @interface IPadViewController () <CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet BeaconView *beaconView;
+@property (weak, nonatomic) IBOutlet UISwitch *filterSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *filterValue;
+@property (weak, nonatomic) IBOutlet UIStepper *filterStepper;
 
 @property CLBeaconRegion *region;
 @property CLLocationManager *manager;
@@ -55,6 +58,28 @@
     
     [self.manager stopRangingBeaconsInRegion:self.region];
 }
+
+#pragma mark - Filter settings
+
+- (IBAction)toggleFilter:(id)sender {
+    if ([self.filterSwitch isOn]) {
+        [BeaconDefaults sharedData].useFilter = YES;
+        [self.filterValue setEnabled:YES];
+        [self.filterStepper setEnabled:YES];
+    }
+    else {
+        [BeaconDefaults sharedData].useFilter = NO;
+        [self.filterValue setEnabled:NO];
+        [self.filterStepper setEnabled:NO];
+    }
+}
+
+- (IBAction)changeFilterK:(id)sender {
+    double newValue = self.filterStepper.value / 10.0;
+    self.filterValue.text = [NSString stringWithFormat:@"%f", newValue];
+    [BeaconDefaults sharedData].kalmanK = newValue;
+}
+
 
 #pragma mark - Location manager delegate
 

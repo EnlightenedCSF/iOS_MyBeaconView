@@ -15,4 +15,7 @@
 @property (strong, nonatomic, readonly) NSUUID *uuid;
 @property (strong, nonatomic, readonly) NSNumber *defaultPower;
 
+@property (nonatomic) BOOL useFilter;
+@property (nonatomic) double kalmanK;
+
 @end

@@ -10,15 +10,18 @@
 
 @implementation RoomBeacon
 
--(id)initWithCoordinateX:(double)x Y:(double)y major:(int)major minor:(int)minor {
+-(id)initWithPosition:(NSArray *)pos height:(double)h major:(int)major minor:(int)minor {
     self = [super init];
     if (self) {
-        _x = x;
-        _y = y;
+        _pos = pos;
+        _h = h;
         _major = [NSNumber numberWithInt:major];
         _minor = [NSNumber numberWithInt:minor];
         _proximity = CLProximityUnknown;
         _accuracy = 0;
+        _lastMeasurment = 0;
+        _rssi = 0;
+        _distance = 0;
     }
     return self;
 }
