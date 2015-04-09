@@ -16,6 +16,7 @@
 		84604AB21AB5DD7E006624E0 /* BeaconViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604AB11AB5DD7E006624E0 /* BeaconViewTests.m */; };
 		84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABC1AB5DE01006624E0 /* BeaconView.m */; };
 		84604AC01AB5E473006624E0 /* RoomBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 84604ABF1AB5E473006624E0 /* RoomBeacon.m */; };
+		84A0521A1AD697DA002D6EC0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 84A052191AD697DA002D6EC0 /* .gitignore */; };
 		84A25FA61AD6678D001426CB /* UserPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A25FA51AD6678D001426CB /* UserPosition.m */; };
 		84A3DD2D1AD016B80037C47A /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A3DD2C1AD016B80037C47A /* Room.m */; };
 		84A91DA61AB9865D002036FD /* Floor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A91DA51AB9865D002036FD /* Floor.m */; };
@@ -52,6 +53,7 @@
 		84604ABC1AB5DE01006624E0 /* BeaconView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeaconView.m; sourceTree = "<group>"; };
 		84604ABE1AB5E473006624E0 /* RoomBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBeacon.h; sourceTree = "<group>"; };
 		84604ABF1AB5E473006624E0 /* RoomBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomBeacon.m; sourceTree = "<group>"; };
+		84A052191AD697DA002D6EC0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		84A25FA41AD6678D001426CB /* UserPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPosition.h; sourceTree = "<group>"; };
 		84A25FA51AD6678D001426CB /* UserPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPosition.m; sourceTree = "<group>"; };
 		84A3DD2B1AD016B80037C47A /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		84604A891AB5DD7C006624E0 = {
 			isa = PBXGroup;
 			children = (
+				84A052191AD697DA002D6EC0 /* .gitignore */,
 				84604A941AB5DD7D006624E0 /* BeaconView */,
 				84604AAE1AB5DD7E006624E0 /* BeaconViewTests */,
 				84604A931AB5DD7D006624E0 /* Products */,
@@ -234,6 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A0521A1AD697DA002D6EC0 /* .gitignore in Resources */,
 				84B188701AC07ABC000ADB2A /* MainIPad.storyboard in Resources */,
 				84604AA61AB5DD7E006624E0 /* LaunchScreen.xib in Resources */,
 				84604AA31AB5DD7E006624E0 /* Images.xcassets in Resources */,
