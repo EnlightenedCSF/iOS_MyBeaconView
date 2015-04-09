@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *filterSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *filterValue;
 @property (weak, nonatomic) IBOutlet UIStepper *filterStepper;
+@property (weak, nonatomic) IBOutlet UISwitch *userFilterSwitch;
 
 @property CLBeaconRegion *region;
 @property CLLocationManager *manager;
@@ -63,12 +64,12 @@
 
 - (IBAction)toggleFilter:(id)sender {
     if ([self.filterSwitch isOn]) {
-        [BeaconDefaults sharedData].useFilter = YES;
+        [BeaconDefaults sharedData].isFilteringAccuracy = YES;
         [self.filterValue setEnabled:YES];
         [self.filterStepper setEnabled:YES];
     }
     else {
-        [BeaconDefaults sharedData].useFilter = NO;
+        [BeaconDefaults sharedData].isFilteringAccuracy = NO;
         [self.filterValue setEnabled:NO];
         [self.filterStepper setEnabled:NO];
     }
@@ -77,9 +78,12 @@
 - (IBAction)changeFilterK:(id)sender {
     double newValue = self.filterStepper.value / 10.0;
     self.filterValue.text = [NSString stringWithFormat:@"%f", newValue];
-    [BeaconDefaults sharedData].kalmanK = newValue;
+    [BeaconDefaults sharedData].kalmanKforAccuracy = newValue;
 }
 
+- (IBAction)toggleUserFilter:(id)sender {
+    [BeaconDefaults sharedData].isFilteringUserPosition = self.userFilterSwitch.isOn;
+}
 
 #pragma mark - Location manager delegate
 

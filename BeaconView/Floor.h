@@ -12,13 +12,14 @@
 @interface Floor : NSObject
 
 @property (nonatomic, strong) NSMutableArray *rooms; // of Room
-@property (nonatomic, strong) NSMutableArray *beacons; //of Beacon
+//@property (nonatomic, strong) NSMutableArray *beacons; //of Beacon
+@property (nonatomic, strong) NSMutableDictionary *beacons;
 
 @property (nonatomic) BOOL canDefineUserPosition;
 @property (nonatomic) CGPoint userPosition;
 @property (nonatomic, strong) NSMutableArray *userPositions;
 
--(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableArray *)beacons UserPosition:(CGPoint)position;
+-(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position;
 
 -(void)didRangeBeacons:(NSArray *)beacons;
 

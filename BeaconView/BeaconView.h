@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) UIImage *userIcon; 
 @property (strong, nonatomic) NSDictionary *beaconIcons;
+@property (strong, nonatomic) UIImage *takenBeaconImage;
 
 @property (nonatomic) Floor *floor;
 

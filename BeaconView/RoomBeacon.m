@@ -22,6 +22,7 @@
         _lastMeasurment = 0;
         _rssi = 0;
         _distance = 0;
+        _isTakenForCalculation = NO;
     }
     return self;
 }

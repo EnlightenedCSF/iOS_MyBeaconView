@@ -25,6 +25,8 @@
 @property (nonatomic) double lastMeasurment;
 @property (nonatomic) double distance;
 
+@property (nonatomic) BOOL isTakenForCalculation;
+
 -(id)initWithPosition:(NSArray *) pos height:(double)h major:(int)major minor:(int)minor;
 
 @end

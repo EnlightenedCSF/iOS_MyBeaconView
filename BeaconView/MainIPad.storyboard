@@ -26,14 +26,8 @@
                                             <action selector="toggleFilter:" destination="tLZ-VU-E3B" eventType="valueChanged" id="Hlq-T0-9IQ"/>
                                         </connections>
                                     </switch>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Kalman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwf-z7-vug">
-                                        <rect key="frame" x="442" y="5" width="93" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kalman K" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbN-Wi-XYK">
-                                        <rect key="frame" x="311" y="39" width="74" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use accuracy filter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwf-z7-vug">
+                                        <rect key="frame" x="392" y="5" width="143" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -52,6 +46,18 @@
                                             <action selector="changeFilterK:" destination="tLZ-VU-E3B" eventType="valueChanged" id="HCE-xh-mYO"/>
                                         </connections>
                                     </stepper>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gmh-uc-XKm">
+                                        <rect key="frame" x="188" y="0.0" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleUserFilter:" destination="tLZ-VU-E3B" eventType="valueChanged" id="4cb-7A-69P"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use user position filter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1h-FR-L4c">
+                                        <rect key="frame" x="8" y="5" width="172" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -59,12 +65,14 @@
                                     <constraint firstItem="2NB-86-zQm" firstAttribute="leading" secondItem="fwf-z7-vug" secondAttribute="trailing" constant="8" symbolic="YES" id="A1h-Gz-R6c"/>
                                     <constraint firstItem="2NB-86-zQm" firstAttribute="trailing" secondItem="FBL-0A-0CV" secondAttribute="trailingMargin" id="BKO-QS-nGm"/>
                                     <constraint firstItem="2NB-86-zQm" firstAttribute="top" secondItem="FBL-0A-0CV" secondAttribute="top" id="TuX-ah-ltB"/>
+                                    <constraint firstItem="Gmh-uc-XKm" firstAttribute="top" secondItem="2NB-86-zQm" secondAttribute="top" id="YnK-Tr-jkR"/>
                                     <constraint firstItem="2NB-86-zQm" firstAttribute="centerY" secondItem="fwf-z7-vug" secondAttribute="centerY" id="ZUh-di-YwB"/>
-                                    <constraint firstItem="pbN-Wi-XYK" firstAttribute="centerY" secondItem="L8d-g7-7h7" secondAttribute="centerY" id="fIi-dN-hib"/>
+                                    <constraint firstItem="q1h-FR-L4c" firstAttribute="leading" secondItem="FBL-0A-0CV" secondAttribute="leadingMargin" id="i5E-7r-8Bi"/>
+                                    <constraint firstItem="Gmh-uc-XKm" firstAttribute="leading" secondItem="q1h-FR-L4c" secondAttribute="trailing" constant="8" symbolic="YES" id="keg-iI-aEY"/>
                                     <constraint firstItem="vK7-A0-6Zb" firstAttribute="bottom" secondItem="L8d-g7-7h7" secondAttribute="bottom" id="pQI-5o-B6I"/>
                                     <constraint firstItem="vK7-A0-6Zb" firstAttribute="leading" secondItem="L8d-g7-7h7" secondAttribute="trailing" constant="8" symbolic="YES" id="pjF-tR-0NL"/>
                                     <constraint firstItem="L8d-g7-7h7" firstAttribute="top" secondItem="fwf-z7-vug" secondAttribute="bottom" constant="8" symbolic="YES" id="q2j-Li-GYl"/>
-                                    <constraint firstItem="L8d-g7-7h7" firstAttribute="leading" secondItem="pbN-Wi-XYK" secondAttribute="trailing" constant="8" symbolic="YES" id="rQ9-ru-ZjN"/>
+                                    <constraint firstItem="q1h-FR-L4c" firstAttribute="baseline" secondItem="fwf-z7-vug" secondAttribute="baseline" id="t1P-2B-AE8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -81,6 +89,7 @@
                         <outlet property="filterStepper" destination="vK7-A0-6Zb" id="qwR-Jy-d9c"/>
                         <outlet property="filterSwitch" destination="2NB-86-zQm" id="CTg-Zc-wcJ"/>
                         <outlet property="filterValue" destination="L8d-g7-7h7" id="Euj-Vf-9QY"/>
+                        <outlet property="userFilterSwitch" destination="Gmh-uc-XKm" id="0py-hQ-0qA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rO1-rb-iCb" userLabel="First Responder" sceneMemberID="firstResponder"/>

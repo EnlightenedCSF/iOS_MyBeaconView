@@ -13,7 +13,7 @@
 
 @implementation Floor
 
--(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableArray *)beacons UserPosition:(CGPoint)position {
+-(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position {
     self = [super init];
      if (self) {
          _rooms = rooms;
@@ -26,58 +26,70 @@
 }
 
 -(void)didRangeBeacons:(NSArray *)beacons {
-    for (CLBeacon *beacon in beacons) {
-        for (RoomBeacon *roomBeacon in self.beacons) {
-            if (roomBeacon.major == beacon.major && roomBeacon.minor == beacon.minor) {
-                roomBeacon.proximity = beacon.proximity;
-                roomBeacon.rssi = beacon.rssi;
-                
-                roomBeacon.lastMeasurment = roomBeacon.accuracy;
-                if ([BeaconDefaults sharedData].useFilter) {
-                    roomBeacon.accuracy = roomBeacon.lastMeasurment * [BeaconDefaults sharedData].kalmanK +
-                                            beacon.accuracy * (1.0 - [BeaconDefaults sharedData].kalmanK);
-                }
-                else {
-                    roomBeacon.accuracy = beacon.accuracy;
-                }
-                
-                double h = roomBeacon.h;
-                double a = roomBeacon.accuracy;
-                roomBeacon.distance = sqrt(a * a - h * h);
-            }
-        }
+    for (RoomBeacon *beacon in [self.beacons allValues]) {
+        beacon.isTakenForCalculation = NO;
     }
     
-    [self calculateUserPositionWithBeacons:[self getThreeBestBeacons]];
+    
+    NSString *uuid = [[BeaconDefaults sharedData].uuid UUIDString];
+    for (CLBeacon *beacon in beacons) {
+        NSString *key = [NSString stringWithFormat:@"%@%@%@", uuid, beacon.major, beacon.minor];
+        
+        RoomBeacon *roomBeacon = [self.beacons objectForKey:key];
+        if (roomBeacon == nil) {
+            continue;
+        }
+        roomBeacon.proximity = beacon.proximity;
+        roomBeacon.rssi = beacon.rssi;
+        roomBeacon.lastMeasurment = roomBeacon.accuracy;
+        if ([BeaconDefaults sharedData].isFilteringAccuracy) {
+            double k = [BeaconDefaults sharedData].kalmanKforAccuracy;
+            roomBeacon.accuracy = roomBeacon.lastMeasurment * k + beacon.accuracy * (1.0 - k);
+        }
+        else {
+            roomBeacon.accuracy = beacon.accuracy;
+        }
+        double h = roomBeacon.h;
+        double a = roomBeacon.accuracy;
+        roomBeacon.distance = sqrt(a * a - h * h);
+    }
+    
+    [self calculateUserPositionWithBeacons:[self threeBestBeacons]];
 }
 
--(NSMutableArray *)getThreeBestBeacons {
+-(NSMutableArray *)threeBestBeacons {
     if (self.beacons.count < 3)
         return nil;
     
-    NSMutableArray *result = [NSMutableArray new];
-    for (int i = 0; i < self.beacons.count; i++) {
-        if (result.count < 3)
-            [result addObject:self.beacons[i]];
+    NSMutableArray *result = [NSMutableArray new];    
+    for (RoomBeacon *beacon in [self.beacons allValues]) {
+        if (result.count < 3) {
+            [result addObject:beacon];
+        }
         else {
-            CLBeacon *worst = result[0];
+            RoomBeacon *worst = result[0];
             for (int k = 1; k < result.count; k++) {
-                CLBeacon *b = result[k];
+                RoomBeacon *b = result[k];
                 if (worst.rssi > b.rssi) {
                     worst = b;
                 }
             }
             
-            CLBeacon *beacon = self.beacons[i];
-            if (worst.rssi < beacon.rssi) {
+            RoomBeacon *newBeacon = beacon;
+            if (worst.rssi < newBeacon.rssi) {
                 [result removeObject:worst];
-                [result addObject:beacon];
+                [result addObject:newBeacon];
             }
         }
+    }
+    
+    for (RoomBeacon *b in result) {
+        b.isTakenForCalculation = YES;
     }
     return result;
 }
 
+//todo: rewrite in C
 -(void)calculateUserPositionWithBeacons:(NSMutableArray *)beacons {
     if (beacons == nil || beacons.count != 3) {
         self.canDefineUserPosition = NO;
@@ -206,8 +218,18 @@
     }
     
     CGPoint p = CGPointMake([triPt[0] doubleValue], [triPt[1] doubleValue]);
-    self.userPosition = p;
-    [self.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
+    
+    if ([BeaconDefaults sharedData].isFilteringUserPosition) {
+        double k = [BeaconDefaults sharedData].kalmanKforUser;
+        CGPoint newPos = CGPointMake(self.userPosition.x * k + (1-k) * p.x,
+                                     self.userPosition.y * k + (1-k) * p.y);
+        self.userPosition = newPos;
+        [self.userPositions addObject:[[UserPosition alloc] initWithPosition:newPos]];        
+    }
+    else {
+        self.userPosition = p;
+        [self.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
+    }
 }
 
 @end

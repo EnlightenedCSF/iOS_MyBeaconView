@@ -11,6 +11,7 @@
 #import "Floor.h"
 #import "Room.h"
 #import "UserPosition.h"
+#import "BeaconDefaults.h"
 
 @interface BeaconView()
 
@@ -32,6 +33,10 @@ CGPoint touchLocation;
 
 #pragma mark - Coordinates conversion
 
+-(CGPoint)convertPointAbsolute:(CGPoint) point {
+    return CGPointMake(point.x * PIXELS_PER_METER, point.y * PIXELS_PER_METER);
+}
+
 -(CGPoint)convertBeaconPosition:(CGPoint) position {
     return CGPointMake(position.x * PIXELS_PER_METER - BEACON_ICON_HALF_WIDTH + _anchorX,
                        position.y * PIXELS_PER_METER - BEACON_ICON_HALF_HEIGHT + _anchorY);
@@ -49,14 +54,6 @@ CGPoint touchLocation;
     return CGPointMake(position.x * PIXELS_PER_METER - USER_ICON_HALF_WIDTH + _anchorX,
                        position.y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY);
 }
-
-/*-(CGFloat)convertUserX:(double)x {
-    return x * PIXELS_PER_METER - USER_ICON_HALF_WIDTH + _anchorX;
-}
-
--(CGFloat)convertUserY:(double)y {
-    return y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY;
-}*/
 
 #pragma mark - Initialization
 
@@ -82,6 +79,7 @@ CGPoint touchLocation;
                           [NSNumber numberWithInt:CLProximityNear]: [UIImage imageNamed:@"icon_yellow"],
                           [NSNumber numberWithInt:CLProximityFar]: [UIImage imageNamed:@"icon_red"]
                           };
+    self.takenBeaconImage = [UIImage imageNamed:@"accept"];
     
     UIImage *icon = [self.beaconIcons objectForKey:[NSNumber numberWithInt:CLProximityFar]];
     BEACON_ICON_HALF_WIDTH = icon.size.width / 2.0;
@@ -108,7 +106,7 @@ CGPoint touchLocation;
                                [[RoomBeacon alloc] initWithPosition:
                                 [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:2], nil] height:0 major:1 minor:3], nil];*/
     
-    NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
+    /*NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
                                [[RoomBeacon alloc] initWithPosition:
                                 [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:1],
                                
@@ -119,10 +117,22 @@ CGPoint touchLocation;
                                 [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:3], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:3],
                                
                                [[RoomBeacon alloc] initWithPosition:
-                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:4], nil];
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:4], nil];*/
     
+    NSMutableDictionary *roomBeacons = [[NSMutableDictionary alloc] initWithCapacity:1];
     
-    self.floor = [[Floor alloc] initWithRooms:rooms Beacons:beacons UserPosition:CGPointMake(0, 0)];
+    NSString *s = [[BeaconDefaults sharedData].uuid UUIDString];
+    roomBeacons[[NSString stringWithFormat:@"%@%d%d", s, 1, 1]] = [[RoomBeacon alloc] initWithPosition:
+                                                                   [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:1];
+    
+    roomBeacons[[NSString stringWithFormat:@"%@%d%d", s, 1, 2]] = [[RoomBeacon alloc] initWithPosition:
+                                                                   [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:3], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:2];
+    roomBeacons[[NSString stringWithFormat:@"%@%d%d", s, 1, 3]] = [[RoomBeacon alloc] initWithPosition:
+                                                                   [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:3], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:3];
+    roomBeacons[[NSString stringWithFormat:@"%@%d%d", s, 1, 4]] = [[RoomBeacon alloc] initWithPosition:
+                                                                   [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:4];
+    
+    self.floor = [[Floor alloc] initWithRooms:rooms Beacons:roomBeacons UserPosition:CGPointMake(0, 0)];
 }
 
 #pragma mark - Drawing
@@ -130,10 +140,24 @@ CGPoint touchLocation;
 - (void)drawRect:(CGRect)rect {
     UIGraphicsGetCurrentContext();
     
+    // Grid
+    [[UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.5] setStroke];
+    CGFloat dashes[] = {5, 2};
+    UIBezierPath *grid = [UIBezierPath new];
+    [grid setLineDash:dashes count:2 phase:0];
+    for (int i = 0; i < 16; i++) {
+        [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, -20)]];
+        [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, 20)]];
+        
+        [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-20.0, -10.0 + 2.0*i)]];
+        [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(20, -10.0 + 2.0*i)]];
+    }
+    [grid stroke];
+    
+    // Rooms
     [[UIColor colorWithRed:220.0/255.0 green:237.0/255.0 blue:250.0/255.0 alpha:1] setFill];
     [[UIColor blackColor] setStroke];
     
-    // Rooms
     for (Room *room in self.floor.rooms) {
         UIBezierPath *roomContour = [UIBezierPath bezierPathWithRect:[self getDrawableRectFromRoom:room]];
         roomContour.lineWidth = ROOM_CONTOUR_LINE_WIDTH;
@@ -142,7 +166,7 @@ CGPoint touchLocation;
     }
     
     // Beacons, labels and radiuses
-    for (RoomBeacon *beacon in self.floor.beacons) {
+    for (RoomBeacon *beacon in [self.floor.beacons allValues]) {
     
         [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.4] setFill];
         UIBezierPath *radius = [UIBezierPath bezierPathWithOvalInRect:[self getDrawableRectForBeacon:beacon]];
@@ -150,6 +174,11 @@ CGPoint touchLocation;
         
         [[self.beaconIcons objectForKey:[NSNumber numberWithInt:beacon.proximity]]
          drawAtPoint:CGPointMake([self convertBeaconX:[beacon.pos[0] doubleValue]], [self convertBeaconY:[beacon.pos[1] doubleValue]])];
+        
+        if (beacon.isTakenForCalculation) {
+            [self.takenBeaconImage drawAtPoint:CGPointMake([self convertBeaconX:[beacon.pos[0] doubleValue]] + 9,
+                                                           [self convertBeaconY:[beacon.pos[1] doubleValue]])];
+        }
         
         [self drawLabelsForBeacon:beacon];
     }
@@ -186,11 +215,12 @@ CGPoint touchLocation;
     [accuracyLabel drawAtPoint:p];
     
     p.y += 10;
+    p.x -= 7;
     NSAttributedString *rssiLabel = [[NSAttributedString alloc]
                                      initWithString:[NSString stringWithFormat:@"%ld", (long)beacon.rssi]];
     [rssiLabel drawAtPoint:p];
     
-    p.x += 15;
+    p.x += 22;
     p.y += 10;
     NSAttributedString *label = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", beacon.minor]];
     [label drawAtPoint:p];

@@ -15,8 +15,10 @@
     if (self) {
         _uuid = [[NSUUID alloc] initWithUUIDString:@"74278BDA-B644-4520-8F0C-720EAF059935"];
         _defaultPower = @-59;
-        _useFilter = YES;
-        _kalmanK = 0.7;
+        _isFilteringAccuracy = YES;
+        _kalmanKforAccuracy = 0.7;
+        _isFilteringUserPosition = YES;
+        _kalmanKforUser = 0.4;
     }
     return self;
 }

@@ -15,7 +15,10 @@
 @property (strong, nonatomic, readonly) NSUUID *uuid;
 @property (strong, nonatomic, readonly) NSNumber *defaultPower;
 
-@property (nonatomic) BOOL useFilter;
-@property (nonatomic) double kalmanK;
+@property (nonatomic) BOOL isFilteringAccuracy;
+@property (nonatomic) double kalmanKforAccuracy;
+
+@property (nonatomic) BOOL isFilteringUserPosition;
+@property (nonatomic) double kalmanKforUser;
 
 @end
