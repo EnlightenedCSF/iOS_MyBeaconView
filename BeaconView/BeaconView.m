@@ -10,6 +10,7 @@
 #import "RoomBeacon.h"
 #import "Floor.h"
 #import "Room.h"
+#import "UserPosition.h"
 
 @interface BeaconView()
 
@@ -31,6 +32,11 @@ CGPoint touchLocation;
 
 #pragma mark - Coordinates conversion
 
+-(CGPoint)convertBeaconPosition:(CGPoint) position {
+    return CGPointMake(position.x * PIXELS_PER_METER - BEACON_ICON_HALF_WIDTH + _anchorX,
+                       position.y * PIXELS_PER_METER - BEACON_ICON_HALF_HEIGHT + _anchorY);
+}
+
 -(CGFloat)convertBeaconX:(double)x {
     return x * PIXELS_PER_METER - BEACON_ICON_HALF_WIDTH + _anchorX;
 }
@@ -39,13 +45,18 @@ CGPoint touchLocation;
     return PIXELS_PER_METER * y - BEACON_ICON_HALF_HEIGHT + _anchorY;
 }
 
--(CGFloat)convertUserX:(double)x {
+-(CGPoint)convertUserPosition:(CGPoint)position {
+    return CGPointMake(position.x * PIXELS_PER_METER - USER_ICON_HALF_WIDTH + _anchorX,
+                       position.y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY);
+}
+
+/*-(CGFloat)convertUserX:(double)x {
     return x * PIXELS_PER_METER - USER_ICON_HALF_WIDTH + _anchorX;
 }
 
 -(CGFloat)convertUserY:(double)y {
     return y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY;
-}
+}*/
 
 #pragma mark - Initialization
 
@@ -87,7 +98,7 @@ CGPoint touchLocation;
                                [[RoomBeacon alloc] initWithCoordinateX:1    Y:2 major:1 minor:1],
                                [[RoomBeacon alloc] initWithCoordinateX:2.45 Y:2 major:1 minor:2], nil];*/
     
-    NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
+    /*NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
                                [[RoomBeacon alloc] initWithPosition:
                                 [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:1],
                                
@@ -95,7 +106,20 @@ CGPoint touchLocation;
                                 [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:2.5], [NSNumber numberWithDouble:1.5], nil] height:0 major:1 minor:2],
                                
                                [[RoomBeacon alloc] initWithPosition:
-                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:2], nil] height:0 major:1 minor:3], nil];
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:2], nil] height:0 major:1 minor:3], nil];*/
+    
+    NSMutableArray *beacons = [[NSMutableArray alloc] initWithObjects:
+                               [[RoomBeacon alloc] initWithPosition:
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:1],
+                               
+                               [[RoomBeacon alloc] initWithPosition:
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:3], [NSNumber numberWithDouble:1], nil] height:0 major:1 minor:2],
+                               
+                               [[RoomBeacon alloc] initWithPosition:
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:3], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:3],
+                               
+                               [[RoomBeacon alloc] initWithPosition:
+                                [[NSArray alloc] initWithObjects:[NSNumber numberWithDouble:1], [NSNumber numberWithDouble:3], nil] height:0 major:1 minor:4], nil];
     
     
     self.floor = [[Floor alloc] initWithRooms:rooms Beacons:beacons UserPosition:CGPointMake(0, 0)];
@@ -131,8 +155,24 @@ CGPoint touchLocation;
     }
     
     // User
+    if (self.floor.userPositions.count > 1) {
+        [[UIColor colorWithRed:205.0/255.0 green:205.0/255.0 blue:205.0/255.5 alpha:1] setStroke];
+        
+        UIBezierPath *userTrack = [UIBezierPath new];
+        
+        UserPosition *point = [self.floor.userPositions objectAtIndex:0];
+        [userTrack moveToPoint:[self convertUserPosition:point.position]];
+        
+        for (int i = 1; i < self.floor.userPositions.count; i++) {
+            point = [self.floor.userPositions objectAtIndex:i];
+            [userTrack addLineToPoint:[self convertUserPosition:point.position]];
+        }
+        [userTrack closePath];
+        [userTrack stroke];
+    }
+    
     if (self.floor.canDefineUserPosition) {
-        [self.userIcon drawAtPoint:CGPointMake([self convertUserX:self.floor.userPosition.x], [self convertUserY:self.floor.userPosition.y])];
+        [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition]];
     }
 }
 

@@ -9,6 +9,7 @@
 #import "Floor.h"
 #import "RoomBeacon.h"
 #import "BeaconDefaults.h"
+#import "UserPosition.h"
 
 @implementation Floor
 
@@ -18,7 +19,7 @@
          _rooms = rooms;
          _beacons = beacons;
          _userPosition = position;
-         _accuracy = 0;
+         _userPositions = [NSMutableArray new];
          _canDefineUserPosition = NO;
      }
      return self;
@@ -56,8 +57,23 @@
     
     NSMutableArray *result = [NSMutableArray new];
     for (int i = 0; i < self.beacons.count; i++) {
-        //TODO
-        [result addObject:self.beacons[i]];
+        if (result.count < 3)
+            [result addObject:self.beacons[i]];
+        else {
+            CLBeacon *worst = result[0];
+            for (int k = 1; k < result.count; k++) {
+                CLBeacon *b = result[k];
+                if (worst.rssi > b.rssi) {
+                    worst = b;
+                }
+            }
+            
+            CLBeacon *beacon = self.beacons[i];
+            if (worst.rssi < beacon.rssi) {
+                [result removeObject:worst];
+                [result addObject:beacon];
+            }
+        }
     }
     return result;
 }
@@ -189,7 +205,9 @@
         [triPt addObject:[NSNumber numberWithDouble:triptx]];
     }
     
-    self.userPosition = CGPointMake([triPt[0] doubleValue], [triPt[1] doubleValue]);
+    CGPoint p = CGPointMake([triPt[0] doubleValue], [triPt[1] doubleValue]);
+    self.userPosition = p;
+    [self.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
 }
 
 @end

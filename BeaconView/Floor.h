@@ -16,7 +16,7 @@
 
 @property (nonatomic) BOOL canDefineUserPosition;
 @property (nonatomic) CGPoint userPosition;
-@property (nonatomic) NSNumber *accuracy;
+@property (nonatomic, strong) NSMutableArray *userPositions;
 
 -(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableArray *)beacons UserPosition:(CGPoint)position;
 
