@@ -11,6 +11,12 @@
 #import "BeaconDefaults.h"
 #import "UserPosition.h"
 
+@interface Floor()
+
+-(BOOL)isRay:(CGPoint)ray IntersectsWithBeaconAccuracyZone:(RoomBeacon *)beacon;
+
+@end
+
 @implementation Floor
 
 -(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position {
@@ -21,6 +27,8 @@
          _userPosition = position;
          _userPositions = [NSMutableArray new];
          _canDefineUserPosition = NO;
+         _boundingRectangle = CGRectMake(0, 0, 0, 0);
+         _userRect = CGRectMake(0, 0, 0, 0);
      }
      return self;
 }
@@ -54,14 +62,15 @@
         roomBeacon.distance = sqrt(a * a - h * h);
     }
     
-    [self calculateUserPositionWithBeacons:[self threeBestBeacons]];
+    [self calculateUserPosition_RAY_TRACING_WithBeacons:[self threeBestBeacons]];
+    //[self calculateUserPositionWithBeacons:[self threeBestBeacons]];
 }
 
 -(NSMutableArray *)threeBestBeacons {
     if (self.beacons.count < 3)
         return nil;
     
-    NSMutableArray *result = [NSMutableArray new];    
+    NSMutableArray *result = [NSMutableArray new];
     for (RoomBeacon *beacon in [self.beacons allValues]) {
         if (result.count < 3) {
             [result addObject:beacon];
@@ -230,6 +239,86 @@
         self.userPosition = p;
         [self.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
     }
+}
+
+
+-(void)calculateUserPosition_RAY_TRACING_WithBeacons:(NSMutableArray *)beacons {
+    if (beacons.count != 3) {
+        self.canDefineUserPosition = NO;
+        return;
+    }
+    self.canDefineUserPosition = YES;
+    
+    RoomBeacon *first = beacons[0];
+    double xMin = [first.pos[0] doubleValue];
+    double xMax = xMin;
+    double yMin = [first.pos[1] doubleValue];
+    double yMax = yMin;
+    for (RoomBeacon *beacon in beacons) {
+        double x = [beacon.pos[0] doubleValue];
+        double y = [beacon.pos[1] doubleValue];
+        double r = beacon.accuracy;
+        
+        if (x-r < xMin) {
+            xMin = x-r;
+        }
+        if (x+r > xMax) {
+            xMax = x+r;
+        }
+        if (y-r < yMin) {
+            yMin = y-r;
+        }
+        if (y+r > yMax) {
+            yMax = y+r;
+        }
+    }
+    _boundingRectangle = CGRectMake(xMin, yMin, xMax - xMin, yMax - yMin);
+    
+    //xMin = yMin = 1e10;
+    //xMax = yMax= -1e10;
+    double xMinUser = 1e10;
+    double xMaxUser = -1e10;
+    double yMinUser = 1e10;
+    double yMaxUser = -1e10;
+    for (double i = xMin; i < xMax; i += 0.07) {
+        for (double j = yMin; j < yMax; j += 0.07) {
+            if ([self isRay:CGPointMake(i, j) IntersectsWithBeaconAccuracyZone:beacons[0]] &&
+                [self isRay:CGPointMake(i, j) IntersectsWithBeaconAccuracyZone:beacons[1]] &&
+                [self isRay:CGPointMake(i, j) IntersectsWithBeaconAccuracyZone:beacons[2]])
+            {
+                if (i < xMinUser) {
+                    xMinUser = i;
+                }
+                if (i > xMaxUser) {
+                    xMaxUser = i;
+                }
+                
+                if (j < yMinUser) {
+                    yMinUser = j;
+                }
+                if (j > yMaxUser) {
+                    yMaxUser = j;
+                }
+            }
+        }
+    }
+    _userRect = CGRectMake(xMinUser, yMinUser, xMaxUser - xMinUser, yMaxUser - yMinUser);
+    _userPosition = CGPointMake((xMinUser + xMaxUser)/2.0, (yMinUser +yMaxUser)/2.0);
+    _userProximity = (xMaxUser - xMinUser  < yMaxUser - yMinUser) ? (xMaxUser - xMinUser)/2.0 : (yMaxUser - yMinUser)/2.0;
+    [_userPositions addObject:[[UserPosition alloc] initWithPosition:_userPosition]];
+}
+
+
+-(BOOL)isRay:(CGPoint)ray IntersectsWithBeaconAccuracyZone:(RoomBeacon *)beacon {
+    if (beacon == nil) {
+        return false;
+    }
+    
+    double r = beacon.accuracy;
+    double x = [beacon.pos[0] doubleValue];
+    double y = [beacon.pos[1] doubleValue];
+    
+    return r > sqrt((ray.x - x)*(ray.x - x) + (ray.y - y)*(ray.y - y));
 }
 
 @end

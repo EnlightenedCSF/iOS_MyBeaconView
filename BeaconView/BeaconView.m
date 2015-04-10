@@ -55,6 +55,13 @@ CGPoint touchLocation;
                        position.y * PIXELS_PER_METER - USER_ICON_HEIGHT + _anchorY);
 }
 
+-(CGRect)convertRect:(CGRect)rect {
+    return CGRectMake(rect.origin.x * PIXELS_PER_METER + _anchorX,
+                      rect.origin.y * PIXELS_PER_METER + _anchorY,
+                      rect.size.width * PIXELS_PER_METER,
+                      rect.size.height * PIXELS_PER_METER);
+}
+
 #pragma mark - Initialization
 
 -(id)initWithFrame:(CGRect)frame {
@@ -141,10 +148,10 @@ CGPoint touchLocation;
     UIGraphicsGetCurrentContext();
     
     // Grid
-    [[UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.5] setStroke];
-    CGFloat dashes[] = {5, 2};
+    [[UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.3] setStroke];
+    //CGFloat dashes[] = {5, 2};
     UIBezierPath *grid = [UIBezierPath new];
-    [grid setLineDash:dashes count:2 phase:0];
+    //[grid setLineDash:dashes count:2 phase:0];
     for (int i = 0; i < 16; i++) {
         [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, -20)]];
         [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, 20)]];
@@ -168,7 +175,7 @@ CGPoint touchLocation;
     // Beacons, labels and radiuses
     for (RoomBeacon *beacon in [self.floor.beacons allValues]) {
     
-        [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.4] setFill];
+        [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.3] setFill];
         UIBezierPath *radius = [UIBezierPath bezierPathWithOvalInRect:[self getDrawableRectForBeacon:beacon]];
         [radius fill];
         
@@ -177,10 +184,17 @@ CGPoint touchLocation;
         
         if (beacon.isTakenForCalculation) {
             [self.takenBeaconImage drawAtPoint:CGPointMake([self convertBeaconX:[beacon.pos[0] doubleValue]] + 9,
-                                                           [self convertBeaconY:[beacon.pos[1] doubleValue]])];
+                                                           [self convertBeaconY:[beacon.pos[1] doubleValue]] + 5)];
         }
         
         [self drawLabelsForBeacon:beacon];
+    }
+    
+    // Bounding rect
+    if (self.floor.canDefineUserPosition) {
+        [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
+        UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
+        [boundingPath fill];
     }
     
     // User
@@ -202,6 +216,10 @@ CGPoint touchLocation;
     
     if (self.floor.canDefineUserPosition) {
         [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition]];
+        
+        [[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
+        UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userRect]];
+        [userProxPath fill];
     }
 }
 

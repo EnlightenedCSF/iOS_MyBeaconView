@@ -19,6 +19,10 @@
 @property (nonatomic) CGPoint userPosition;
 @property (nonatomic, strong) NSMutableArray *userPositions;
 
+@property (nonatomic) CGRect boundingRectangle;
+@property (nonatomic) CGRect userRect;
+@property (nonatomic) double userProximity;
+
 -(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position;
 
 -(void)didRangeBeacons:(NSArray *)beacons;
