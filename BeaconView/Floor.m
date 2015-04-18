@@ -379,7 +379,7 @@
     double p1[2]={xa,ya};
     double p2[2]={xb,yb};
     double p3[2]={xc,yc};
-    double ex[2],ey[2],ez[2];
+    double ex[2],ey[2];//,ez[2];
     double i=0,k=0,x=0,y=0;
     
     double distA = ((RoomBeacon *)beacons[0]).accuracy;
