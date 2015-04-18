@@ -149,9 +149,7 @@ CGPoint touchLocation;
     
     // Grid
     [[UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.3] setStroke];
-    //CGFloat dashes[] = {5, 2};
     UIBezierPath *grid = [UIBezierPath new];
-    //[grid setLineDash:dashes count:2 phase:0];
     for (int i = 0; i < 16; i++) {
         [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, -20)]];
         [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, 20)]];
@@ -191,14 +189,14 @@ CGPoint touchLocation;
     }
     
     // Bounding rect
-    if (self.floor.canDefineUserPosition) {
+    /*if (self.floor.canDefineUserPosition) {
         [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
         UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
         [boundingPath fill];
-    }
+    }*/
     
     // User
-    if (self.floor.userPositions.count > 1) {
+    /*if (self.floor.userPositions.count > 1) {
         [[UIColor colorWithRed:205.0/255.0 green:205.0/255.0 blue:205.0/255.5 alpha:1] setStroke];
         
         UIBezierPath *userTrack = [UIBezierPath new];
@@ -212,14 +210,14 @@ CGPoint touchLocation;
         }
         [userTrack closePath];
         [userTrack stroke];
-    }
+    }*/
     
     if (self.floor.canDefineUserPosition) {
         [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition]];
         
-        [[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
+        /*[[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
         UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userRect]];
-        [userProxPath fill];
+        [userProxPath fill];*/
     }
 }
 
