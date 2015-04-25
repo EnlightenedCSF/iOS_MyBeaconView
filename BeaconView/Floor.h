@@ -7,15 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AbstractTrilateratingMethod.h"
 @import CoreGraphics;
+
 
 @interface Floor : NSObject
 
-@property (nonatomic, strong) NSMutableArray *rooms; // of Room
-//@property (nonatomic, strong) NSMutableArray *beacons; //of Beacon
-@property (nonatomic, strong) NSMutableDictionary *beacons;
+@property (nonatomic, strong) NSMutableArray *rooms;        // of Room
+@property (nonatomic, strong) NSMutableDictionary *beacons; // of @"uuid+major+minor" => Room Beacon
 
 @property (nonatomic) BOOL canDefineUserPosition;
+@property (nonatomic, strong) AbstractTrilateratingMethod *algorithm;
+
 @property (nonatomic) CGPoint userPosition;
 @property (nonatomic, strong) NSMutableArray *userPositions;
 
@@ -26,5 +29,7 @@
 -(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position;
 
 -(void)didRangeBeacons:(NSArray *)beacons;
+
+-(void)useAnotherCalculationStrategy:(AbstractTrilateratingMethod *)strategy;
 
 @end
