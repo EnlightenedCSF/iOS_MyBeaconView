@@ -12,6 +12,7 @@
 #import "AbstractTrilateratingMethod.h"
 #import "FirstTrilateratingStrategy.h"
 #import "RayTracingTrilateratingStrategy.h"
+#import "PowerLinesTrilateratingStrategy.h"
 @import CoreLocation;
 
 
@@ -107,15 +108,12 @@
         self.switchAlg2.on = NO;
         self.switchAlg3.on = NO;
         
-        //create alg1, dependency inject it
         strategy = [[FirstTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     else {
-        // if first is being turned off, turn on the second one
         self.switchAlg2.on = YES;
         self.switchAlg3.on = NO;
         
-        //create alg2
         strategy = [[RayTracingTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
         
     }
@@ -128,14 +126,13 @@
         self.switchAlg1.on = NO;
         self.switchAlg3.on = NO;
         
-        //create alg2, dependency inject it
         strategy = [[RayTracingTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     else {
         self.switchAlg3.on = YES;
         self.switchAlg1.on = NO;
         
-        //create alg3
+        strategy = [[PowerLinesTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     [self.beaconView.floor useAnotherCalculationStrategy:strategy];
 }
@@ -146,14 +143,12 @@
         self.switchAlg1.on = NO;
         self.switchAlg2.on = NO;
         
-        //create alg3, dependency inject it
+        strategy = [[PowerLinesTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     else {
-        // if first is being turned off, turn on the second one
         self.switchAlg1.on = YES;
         self.switchAlg2.on = NO;
         
-        //create alg1
         strategy = [[FirstTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     [self.beaconView.floor useAnotherCalculationStrategy:strategy];
