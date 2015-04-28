@@ -12,6 +12,8 @@
 #import "Room.h"
 #import "UserPosition.h"
 #import "BeaconDefaults.h"
+#import "DrawingOptions.h"
+#import "RayTracingTrilateratingStrategy.h"
 
 @interface BeaconView()
 
@@ -117,42 +119,28 @@ CGPoint touchLocation;
 - (void)drawRect:(CGRect)rect {
     UIGraphicsGetCurrentContext();
     
-    [self drawGrid];
+    if ([DrawingOptions sharedData].isDrawingGrid) {
+        [self drawGrid];
+    }
     
     [self drawRooms];
     
     [self drawBeacons];
     
-    // Bounding rect
-    /*if (self.floor.canDefineUserPosition) {
-        [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
-        UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
-        [boundingPath fill];
-    }*/
+    if ([self.floor.algorithm isKindOfClass:[RayTracingTrilateratingStrategy class]] && [DrawingOptions sharedData].isDrawingUserBoundingBoxes) {
+        [self drawBoundingBox];
+    }
     
-    // User
-    /*if (self.floor.userPositions.count > 1) {
-        [[UIColor colorWithRed:205.0/255.0 green:205.0/255.0 blue:205.0/255.5 alpha:1] setStroke];
-        
-        UIBezierPath *userTrack = [UIBezierPath new];
-        
-        UserPosition *point = [self.floor.userPositions objectAtIndex:0];
-        [userTrack moveToPoint:[self convertUserPosition:point.position]];
-        
-        for (int i = 1; i < self.floor.userPositions.count; i++) {
-            point = [self.floor.userPositions objectAtIndex:i];
-            [userTrack addLineToPoint:[self convertUserPosition:point.position]];
-        }
-        [userTrack closePath];
-        [userTrack stroke];
-    }*/
+    if ([DrawingOptions sharedData].isDrawingUserTrace) {
+        [self drawUserTrace];
+    }
     
     if (self.floor.canDefineUserPosition) {
         [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition]];
         
-        /*[[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
-        UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userRect]];
-        [userProxPath fill];*/
+        if ([DrawingOptions sharedData].isDrawingUserProximity) {
+            [self drawUserProximity];
+        }
     }
 }
 
@@ -187,10 +175,12 @@ CGPoint touchLocation;
 -(void)drawBeacons {
     for (RoomBeacon *beacon in [self.floor.beacons allValues]) {
         
-        if (beacon.isTakenForCalculation) {
-            [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.3] setFill];
-            UIBezierPath *radius = [UIBezierPath bezierPathWithOvalInRect:[self getDrawableRectForBeacon:beacon]];
-            [radius fill];
+        if ([DrawingOptions sharedData].isDrawingBeaconAccuracyRadiuses) {
+            if (beacon.isTakenForCalculation) {
+                [[UIColor colorWithRed:215.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:0.3] setFill];
+                UIBezierPath *radius = [UIBezierPath bezierPathWithOvalInRect:[self getDrawableRectForBeacon:beacon]];
+                [radius fill];
+            }
         }
         
         [[self.beaconIcons objectForKey:[NSNumber numberWithInt:beacon.proximity]]
@@ -201,7 +191,9 @@ CGPoint touchLocation;
                                                            [self convertBeaconY:[beacon.pos[1] doubleValue]] + 5)];
         }
         
-        [self drawLabelsForBeacon:beacon];
+        if ([DrawingOptions sharedData].isDrawingBeaconLabels) {
+            [self drawLabelsForBeacon:beacon];
+        }
     }
 }
 
@@ -226,6 +218,42 @@ CGPoint touchLocation;
     [label drawAtPoint:p];
 }
 
+
+-(void)drawBoundingBox {
+    if (self.floor.canDefineUserPosition) {
+        [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
+        UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
+        [boundingPath fill];
+    }
+}
+
+
+-(void)drawUserTrace {
+    if (self.floor.userPositions.count > 1) {
+        [[UIColor colorWithRed:205.0/255.0 green:205.0/255.0 blue:205.0/255.5 alpha:1] setStroke];
+        
+        UIBezierPath *userTrack = [UIBezierPath new];
+        
+        UserPosition *point = [self.floor.userPositions objectAtIndex:0];
+        [userTrack moveToPoint:[self convertUserPosition:point.position]];
+        
+        for (int i = 1; i < self.floor.userPositions.count; i++) {
+            point = [self.floor.userPositions objectAtIndex:i];
+            [userTrack addLineToPoint:[self convertUserPosition:point.position]];
+        }
+        [userTrack closePath];
+        [userTrack stroke];
+    }
+}
+
+
+-(void)drawUserProximity {
+    [[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
+     UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userRect]];
+     [userProxPath fill];
+}
+
+//---
 
 -(CGRect)getDrawableRectFromRoom:(Room *)room {
     return CGRectMake(room.rect.origin.x * PIXELS_PER_METER + _anchorX,

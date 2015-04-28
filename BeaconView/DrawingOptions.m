@@ -16,7 +16,7 @@
         _isDrawingGrid = YES;
         _gridCellSize = 2;
         
-        _isDrawingTrace = YES;
+        _isDrawingUserTrace = YES;
         _isDrawingUserProximity = NO;
         _isDrawingUserBoundingBoxes = NO;
         

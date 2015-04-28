@@ -130,10 +130,7 @@
 				84A4F7521AE3D30A00976DA7 /* Trilaterating */,
 				84604ABB1AB5DE01006624E0 /* BeaconView.h */,
 				84604ABC1AB5DE01006624E0 /* BeaconView.m */,
-				840EB8DD1AC173450078BF33 /* BeaconDefaults.h */,
-				840EB8DE1AC173450078BF33 /* BeaconDefaults.m */,
-				84A244F41AED52C100AE248F /* DrawingOptions.h */,
-				84A244F51AED52C100AE248F /* DrawingOptions.m */,
+				84F9560C1AEF771E002C2995 /* SharedData */,
 				84A244FE1AED557D00AE248F /* ViewControllers */,
 				84A244FA1AED540700AE248F /* MainIPad.storyboard */,
 				84A244FC1AED54ED00AE248F /* Distr.mobileprovision */,
@@ -194,6 +191,17 @@
 				84A4F7541AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.m */,
 			);
 			name = Trilaterating;
+			sourceTree = "<group>";
+		};
+		84F9560C1AEF771E002C2995 /* SharedData */ = {
+			isa = PBXGroup;
+			children = (
+				840EB8DD1AC173450078BF33 /* BeaconDefaults.h */,
+				840EB8DE1AC173450078BF33 /* BeaconDefaults.m */,
+				84A244F41AED52C100AE248F /* DrawingOptions.h */,
+				84A244F51AED52C100AE248F /* DrawingOptions.m */,
+			);
+			name = SharedData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A244F91AED52C100AE248F /* DrawingOptionsTableViewController.m in Sources */,
 				84A4F7581AE3D44400976DA7 /* AbstractTrilateratingMethod.m in Sources */,
 				84A3DD2D1AD016B80037C47A /* Room.m in Sources */,
 				84A91DA61AB9865D002036FD /* Floor.m in Sources */,
@@ -310,7 +319,6 @@
 				84604ABD1AB5DE01006624E0 /* BeaconView.m in Sources */,
 				84604A981AB5DD7D006624E0 /* main.m in Sources */,
 				84604AC01AB5E473006624E0 /* RoomBeacon.m in Sources */,
-				84A244F91AED52C100AE248F /* DrawingOptionsTableViewController.m in Sources */,
 				84A25FA61AD6678D001426CB /* UserPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

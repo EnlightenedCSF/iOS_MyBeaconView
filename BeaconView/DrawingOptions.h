@@ -15,7 +15,7 @@
 @property (nonatomic)BOOL isDrawingGrid;
 @property (nonatomic)double gridCellSize;
 
-@property (nonatomic)BOOL isDrawingTrace;
+@property (nonatomic)BOOL isDrawingUserTrace;
 @property (nonatomic)BOOL isDrawingUserProximity;
 @property (nonatomic)BOOL isDrawingUserBoundingBoxes;
 
