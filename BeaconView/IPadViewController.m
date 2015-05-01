@@ -9,7 +9,7 @@
 #import "IPadViewController.h"
 #import "BeaconView.h"
 #import "BeaconDefaults.h"
-#import "AbstractTrilateratingMethod.h"
+#import "AbstractTrilateratingStrategy.h"
 #import "FirstTrilateratingStrategy.h"
 #import "RayTracingTrilateratingStrategy.h"
 #import "PowerLinesTrilateratingStrategy.h"
@@ -19,9 +19,11 @@
 @interface IPadViewController () <CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet BeaconView *beaconView;
+
 @property (weak, nonatomic) IBOutlet UISwitch *filterSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *filterValue;
 @property (weak, nonatomic) IBOutlet UIStepper *filterStepper;
+
 @property (weak, nonatomic) IBOutlet UISwitch *userFilterSwitch;
 
 @property (weak, nonatomic) IBOutlet UISwitch *switchAlg1;
@@ -76,7 +78,7 @@
 }
 
 #pragma mark - Filter settings
-
+/*
 - (IBAction)toggleFilter:(id)sender {
     if ([self.filterSwitch isOn]) {
         [BeaconDefaults sharedData].isFilteringAccuracy = YES;
@@ -98,12 +100,12 @@
 
 - (IBAction)toggleUserFilter:(id)sender {
     [BeaconDefaults sharedData].isFilteringUserPosition = self.userFilterSwitch.isOn;
-}
+}*/
 
 #pragma mark - Algorithm choosing
 
 - (IBAction)toggleFirstAlgSwitch:(id)sender {
-    AbstractTrilateratingMethod *strategy;
+    AbstractTrilateratingStrategy *strategy;
     if ([self.switchAlg1 isOn]) {
         self.switchAlg2.on = NO;
         self.switchAlg3.on = NO;
@@ -121,7 +123,7 @@
 }
 
 - (IBAction)toggleSecondAlgSwitch:(id)sender {
-    AbstractTrilateratingMethod *strategy;
+    AbstractTrilateratingStrategy *strategy;
     if ([self.switchAlg2 isOn]) {
         self.switchAlg1.on = NO;
         self.switchAlg3.on = NO;
@@ -138,7 +140,7 @@
 }
 
 - (IBAction)toggleThirdAlgSwitch:(id)sender {
-    AbstractTrilateratingMethod *strategy;
+    AbstractTrilateratingStrategy *strategy;
     if ([self.switchAlg3 isOn]) {
         self.switchAlg1.on = NO;
         self.switchAlg2.on = NO;

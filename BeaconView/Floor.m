@@ -106,7 +106,7 @@
     return result;
 }
 
--(void)useAnotherCalculationStrategy:(AbstractTrilateratingMethod *)strategy {
+-(void)useAnotherCalculationStrategy:(AbstractTrilateratingStrategy *)strategy {
     _algorithm = strategy;
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AbstractTrilateratingMethod.h"
+#import "AbstractTrilateratingStrategy.h"
 @import CoreGraphics;
 
 
@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableDictionary *beacons; // of @"uuid+major+minor" => Room Beacon
 
 @property (nonatomic) BOOL canDefineUserPosition;
-@property (nonatomic, strong) AbstractTrilateratingMethod *algorithm;
+@property (nonatomic, strong) AbstractTrilateratingStrategy *algorithm;
 
 @property (nonatomic) CGPoint userPosition;
 @property (nonatomic, strong) NSMutableArray *userPositions;
@@ -30,6 +30,6 @@
 
 -(void)didRangeBeacons:(NSArray *)beacons;
 
--(void)useAnotherCalculationStrategy:(AbstractTrilateratingMethod *)strategy;
+-(void)useAnotherCalculationStrategy:(AbstractTrilateratingStrategy *)strategy;
 
 @end

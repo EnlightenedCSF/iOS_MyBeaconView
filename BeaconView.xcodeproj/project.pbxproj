@@ -24,7 +24,7 @@
 		84A3DD2D1AD016B80037C47A /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A3DD2C1AD016B80037C47A /* Room.m */; };
 		84A4F7511AE3D15C00976DA7 /* FirstTrilateratingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4F7501AE3D15C00976DA7 /* FirstTrilateratingStrategy.m */; };
 		84A4F7551AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4F7541AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.m */; };
-		84A4F7581AE3D44400976DA7 /* AbstractTrilateratingMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4F7571AE3D44400976DA7 /* AbstractTrilateratingMethod.m */; };
+		84A4F7581AE3D44400976DA7 /* AbstractTrilateratingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A4F7571AE3D44400976DA7 /* AbstractTrilateratingStrategy.m */; };
 		84A91DA61AB9865D002036FD /* Floor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A91DA51AB9865D002036FD /* Floor.m */; };
 		84B188731AC07DDB000ADB2A /* IPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B188721AC07DDB000ADB2A /* IPadViewController.m */; };
 		84F956111AEF855E002C2995 /* PowerLinesTrilateratingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F956101AEF855E002C2995 /* PowerLinesTrilateratingStrategy.m */; };
@@ -72,8 +72,8 @@
 		84A4F7501AE3D15C00976DA7 /* FirstTrilateratingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTrilateratingStrategy.m; sourceTree = "<group>"; };
 		84A4F7531AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RayTracingTrilateratingStrategy.h; sourceTree = "<group>"; };
 		84A4F7541AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RayTracingTrilateratingStrategy.m; sourceTree = "<group>"; };
-		84A4F7561AE3D44400976DA7 /* AbstractTrilateratingMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractTrilateratingMethod.h; sourceTree = "<group>"; };
-		84A4F7571AE3D44400976DA7 /* AbstractTrilateratingMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTrilateratingMethod.m; sourceTree = "<group>"; };
+		84A4F7561AE3D44400976DA7 /* AbstractTrilateratingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractTrilateratingStrategy.h; sourceTree = "<group>"; };
+		84A4F7571AE3D44400976DA7 /* AbstractTrilateratingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTrilateratingStrategy.m; sourceTree = "<group>"; };
 		84A91DA41AB9865D002036FD /* Floor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Floor.h; sourceTree = "<group>"; };
 		84A91DA51AB9865D002036FD /* Floor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Floor.m; sourceTree = "<group>"; };
 		84B188711AC07DDA000ADB2A /* IPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPadViewController.h; sourceTree = "<group>"; };
@@ -186,8 +186,8 @@
 		84A4F7521AE3D30A00976DA7 /* Trilaterating */ = {
 			isa = PBXGroup;
 			children = (
-				84A4F7561AE3D44400976DA7 /* AbstractTrilateratingMethod.h */,
-				84A4F7571AE3D44400976DA7 /* AbstractTrilateratingMethod.m */,
+				84A4F7561AE3D44400976DA7 /* AbstractTrilateratingStrategy.h */,
+				84A4F7571AE3D44400976DA7 /* AbstractTrilateratingStrategy.m */,
 				84A4F74F1AE3D15C00976DA7 /* FirstTrilateratingStrategy.h */,
 				84A4F7501AE3D15C00976DA7 /* FirstTrilateratingStrategy.m */,
 				84A4F7531AE3D3E500976DA7 /* RayTracingTrilateratingStrategy.h */,
@@ -312,7 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A244F91AED52C100AE248F /* DrawingOptionsTableViewController.m in Sources */,
-				84A4F7581AE3D44400976DA7 /* AbstractTrilateratingMethod.m in Sources */,
+				84A4F7581AE3D44400976DA7 /* AbstractTrilateratingStrategy.m in Sources */,
 				84A3DD2D1AD016B80037C47A /* Room.m in Sources */,
 				84A91DA61AB9865D002036FD /* Floor.m in Sources */,
 				84F956111AEF855E002C2995 /* PowerLinesTrilateratingStrategy.m in Sources */,

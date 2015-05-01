@@ -10,7 +10,7 @@
 
 @class Floor;
 
-@interface AbstractTrilateratingMethod : NSObject
+@interface AbstractTrilateratingStrategy : NSObject
 
 @property (nonatomic, weak) Floor *floor;
 

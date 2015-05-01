@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 CSF. All rights reserved.
 //
 
-#import "AbstractTrilateratingMethod.h"
+#import "AbstractTrilateratingStrategy.h"
 #import "Floor.h"
 
-@implementation AbstractTrilateratingMethod
+@implementation AbstractTrilateratingStrategy
 
 -(id)initWithFloor:(Floor *)floor {
     self = [super init];
