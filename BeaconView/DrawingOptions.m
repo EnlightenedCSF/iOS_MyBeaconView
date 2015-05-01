@@ -18,7 +18,6 @@
         
         _isDrawingUserTrace = YES;
         _isDrawingUserProximity = NO;
-        _isDrawingUserBoundingBoxes = NO;
         
         _isDrawingBeaconLabels = YES;
         _isDrawingBeaconAccuracyRadiuses = YES;

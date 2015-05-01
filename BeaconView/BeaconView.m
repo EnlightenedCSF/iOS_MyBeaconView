@@ -127,9 +127,9 @@ CGPoint touchLocation;
     
     [self drawBeacons];
     
-    if ([self.floor.algorithm isKindOfClass:[RayTracingTrilateratingStrategy class]] && [DrawingOptions sharedData].isDrawingUserBoundingBoxes) {
+    /*if ([self.floor.algorithm isKindOfClass:[RayTracingTrilateratingStrategy class]] && [DrawingOptions sharedData].isDrawingUserBoundingBoxes) {
         [self drawBoundingBox];
-    }
+    }*/
     
     if ([DrawingOptions sharedData].isDrawingUserTrace) {
         [self drawUserTrace];
@@ -222,13 +222,13 @@ CGPoint touchLocation;
 }
 
 
--(void)drawBoundingBox {
+/*-(void)drawBoundingBox {
     if (self.floor.canDefineUserPosition) {
         [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
         UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
         [boundingPath fill];
     }
-}
+}*/
 
 
 -(void)drawUserTrace {

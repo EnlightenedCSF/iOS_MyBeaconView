@@ -111,7 +111,7 @@
         <scene sceneID="GFz-N1-pQs">
             <objects>
                 <tableViewController id="3oH-N5-5ao" customClass="DrawingOptionsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="abx-GR-5IH">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="abx-GR-5IH">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -315,6 +315,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cve-sn-rl3">
                                                     <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="toggleAccuracyFiltering:" destination="3oH-N5-5ao" eventType="valueChanged" id="bYI-Rg-fJ7"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -331,16 +334,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="epz-7z-gWd" id="CkE-2I-izR">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Bbi-ZE-MvY">
-                                                    <rect key="frame" x="498" y="7" width="94" height="29"/>
-                                                </stepper>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beacon accuracy's filter coefficient" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ozS-fe-YgP">
-                                                    <rect key="frame" x="8" y="11" width="269" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lee-Bb-aQx">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.5" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Lee-Bb-aQx">
                                                     <rect key="frame" x="450" y="7" width="40" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="o1o-g0-W1o"/>
@@ -348,6 +342,18 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beacon accuracy's filter coefficient" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ozS-fe-YgP">
+                                                    <rect key="frame" x="8" y="11" width="269" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minimumValue="1" maximumValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="Bbi-ZE-MvY">
+                                                    <rect key="frame" x="498" y="7" width="94" height="29"/>
+                                                    <connections>
+                                                        <action selector="filterAccuracyKChanged:" destination="3oH-N5-5ao" eventType="valueChanged" id="xL4-Yb-wXe"/>
+                                                    </connections>
+                                                </stepper>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ozS-fe-YgP" firstAttribute="leading" secondItem="CkE-2I-izR" secondAttribute="leadingMargin" id="XhD-2v-JB4"/>
@@ -373,6 +379,9 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0gP-W1-0fA">
                                                     <rect key="frame" x="543" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="toggleUserPosFiltering:" destination="3oH-N5-5ao" eventType="valueChanged" id="Hcv-4y-pLJ"/>
+                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -395,10 +404,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="iS3-Ag-zkU">
-                                                    <rect key="frame" x="498" y="7" width="94" height="29"/>
-                                                </stepper>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ePl-6g-Xfr">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.5" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ePl-6g-Xfr">
                                                     <rect key="frame" x="450" y="7" width="40" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="1op-qh-KYX"/>
@@ -406,6 +412,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minimumValue="1" maximumValue="9" translatesAutoresizingMaskIntoConstraints="NO" id="iS3-Ag-zkU">
+                                                    <rect key="frame" x="498" y="7" width="94" height="29"/>
+                                                    <connections>
+                                                        <action selector="filterUserPosKChanged:" destination="3oH-N5-5ao" eventType="valueChanged" id="Xun-3q-fFP"/>
+                                                    </connections>
+                                                </stepper>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ePl-6g-Xfr" firstAttribute="top" secondItem="iS3-Ag-zkU" secondAttribute="top" id="2VR-z0-bot"/>
@@ -427,13 +439,19 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Options" id="rvM-rG-L79"/>
                     <connections>
+                        <outlet property="stepperAccuracyK" destination="Bbi-ZE-MvY" id="VnO-Y5-z86"/>
                         <outlet property="stepperGridCellSize" destination="HiG-Hs-w1o" id="SxH-5M-oqU"/>
+                        <outlet property="stepperUserPositionK" destination="iS3-Ag-zkU" id="X2c-aU-UoD"/>
                         <outlet property="switchBeaconLabels" destination="JEe-do-nXp" id="qK4-u5-h3i"/>
                         <outlet property="switchBeaconsAccuracy" destination="EDm-aP-sl2" id="5e6-ux-r5g"/>
+                        <outlet property="switchFilterAccuracy" destination="cve-sn-rl3" id="II8-I0-ZJG"/>
+                        <outlet property="switchFilterUserPosition" destination="0gP-W1-0fA" id="edQ-CR-Ujy"/>
                         <outlet property="switchGrid" destination="2yu-Xa-W5b" id="jNA-M0-3tu"/>
                         <outlet property="switchUserProx" destination="zQq-lT-NKQ" id="gNa-P2-Nzx"/>
                         <outlet property="switchUserTrace" destination="fEF-9n-TEE" id="Bec-gr-HfH"/>
+                        <outlet property="textFieldAccuracyK" destination="Lee-Bb-aQx" id="cT8-Vr-K6H"/>
                         <outlet property="textFieldGridCellSize" destination="2vl-7p-O9Z" id="9mH-5M-h7r"/>
+                        <outlet property="textFieldUserPositionK" destination="ePl-6g-Xfr" id="Vfb-vV-i9w"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aN2-Tr-X6A" userLabel="First Responder" sceneMemberID="firstResponder"/>

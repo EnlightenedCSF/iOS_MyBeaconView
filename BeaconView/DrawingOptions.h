@@ -17,7 +17,6 @@
 
 @property (nonatomic)BOOL isDrawingUserTrace;
 @property (nonatomic)BOOL isDrawingUserProximity;
-@property (nonatomic)BOOL isDrawingUserBoundingBoxes;
 
 @property (nonatomic)BOOL isDrawingBeaconAccuracyRadiuses;
 @property (nonatomic)BOOL isDrawingBeaconLabels;
