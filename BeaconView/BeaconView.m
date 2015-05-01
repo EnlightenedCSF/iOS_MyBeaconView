@@ -24,7 +24,7 @@
 
 @implementation BeaconView
 
-double ROOM_CONTOUR_LINE_WIDTH = 2;
+double ROOM_CONTOUR_LINE_WIDTH = 3;
 double PIXELS_PER_METER = 80.0;
 double BEACON_ICON_HALF_WIDTH;
 double BEACON_ICON_HALF_HEIGHT;
@@ -148,13 +148,16 @@ CGPoint touchLocation;
 -(void)drawGrid {
     [[UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.3] setStroke];
     UIBezierPath *grid = [UIBezierPath new];
-    for (int i = 0; i < 16; i++) {
-        [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, -20)]];
-        [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(-10.0 + 2.0*i, 20)]];
+    
+    int cnt = (int) ceil([[UIScreen mainScreen] bounds].size.height / PIXELS_PER_METER);
+    for (int i = 1; i < cnt; i++) {
+        [grid moveToPoint:[self convertPointAbsolute:CGPointMake(i * [DrawingOptions sharedData].gridCellSize, 0)]];
+        [grid addLineToPoint:[self convertPointAbsolute:CGPointMake(i * [DrawingOptions sharedData].gridCellSize, 150)]];
         
-        [grid moveToPoint: [self convertPointAbsolute:CGPointMake(-20.0, -10.0 + 2.0*i)]];
-        [grid addLineToPoint: [self convertPointAbsolute:CGPointMake(20, -10.0 + 2.0*i)]];
+        [grid moveToPoint:[self convertPointAbsolute:CGPointMake(0, i * [DrawingOptions sharedData].gridCellSize)]];
+        [grid addLineToPoint:[self convertPointAbsolute:CGPointMake(150, i * [DrawingOptions sharedData].gridCellSize)]];
     }
+    
     [grid stroke];
 }
 
