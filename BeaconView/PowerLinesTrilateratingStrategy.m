@@ -48,7 +48,8 @@
     double Y = ([B1[0] doubleValue] - [B2[0] doubleValue]) * (k2 - k3) -
                ([B2[0] doubleValue] - [B3[0] doubleValue]) * (k1 - k2);
     
-    self.floor.userPosition = CGPointMake(X / D, Y / D);
+    self.floor.userPosition = [[UserPosition alloc] initWithPosition:CGPointMake(X / D, Y / D)];
+    [self.floor.userPositions addObject:self.floor.userPosition];
 }
 
 @end

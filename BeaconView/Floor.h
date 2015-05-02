@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AbstractTrilateratingStrategy.h"
+#import "UserPosition.h"
 @import CoreGraphics;
 
 
@@ -19,12 +20,10 @@
 @property (nonatomic) BOOL canDefineUserPosition;
 @property (nonatomic, strong) AbstractTrilateratingStrategy *algorithm;
 
-@property (nonatomic) CGPoint userPosition;
+@property (nonatomic, strong) UserPosition* userPosition;
 @property (nonatomic, strong) NSMutableArray *userPositions;
 
-@property (nonatomic) CGRect boundingRectangle;
-@property (nonatomic) CGRect userRect;
-@property (nonatomic) double userProximity;
+@property (nonatomic) CGRect userProximityRect;
 
 -(id)initWithRooms:(NSMutableArray *)rooms Beacons:(NSMutableDictionary *)beacons UserPosition:(CGPoint)position;
 

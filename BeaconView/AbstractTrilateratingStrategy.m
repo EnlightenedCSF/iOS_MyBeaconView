@@ -8,6 +8,7 @@
 
 #import "AbstractTrilateratingStrategy.h"
 #import "Floor.h"
+#import "UserPosition.h"
 
 @implementation AbstractTrilateratingStrategy
 
@@ -20,7 +21,7 @@
 }
 
 -(void)calculateUserPositionUsingBeacons:(NSMutableArray *)beacons {
-    self.floor.userPosition = CGPointMake(0, 0);
+    self.floor.userPosition = [[UserPosition alloc] initWithPosition:CGPointMake(0, 0)];
 }
 
 @end

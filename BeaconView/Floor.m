@@ -11,7 +11,7 @@
 #import "BeaconDefaults.h"
 #import "UserPosition.h"
 
-#import "FirstTrilateratingStrategy.h"
+#import "SphereIntersectionTrilateratingStrategy.h"
 #import "RayTracingTrilateratingStrategy.h"
 
 @implementation Floor
@@ -25,12 +25,12 @@
          _canDefineUserPosition = NO;
          _algorithm = [[RayTracingTrilateratingStrategy alloc] initWithFloor:self];
          
-         _userPosition = position;
+         _userPosition = [[UserPosition alloc] initWithPosition:position];
          _userPositions = [NSMutableArray new];
          
-         _boundingRectangle = CGRectMake(0, 0, 0, 0);
-         _userRect = CGRectMake(0, 0, 0, 0);
-         _userProximity = 0;
+         //_boundingRectangle = CGRectMake(0, 0, 0, 0);
+         _userProximityRect = CGRectMake(0, 0, 0, 0);
+         //_userProximityRect = 0;
      }
      return self;
 }

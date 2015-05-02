@@ -10,7 +10,7 @@
 #import "BeaconView.h"
 #import "BeaconDefaults.h"
 #import "AbstractTrilateratingStrategy.h"
-#import "FirstTrilateratingStrategy.h"
+#import "SphereIntersectionTrilateratingStrategy.h"
 #import "RayTracingTrilateratingStrategy.h"
 #import "PowerLinesTrilateratingStrategy.h"
 @import CoreLocation;
@@ -110,7 +110,7 @@
         self.switchAlg2.on = NO;
         self.switchAlg3.on = NO;
         
-        strategy = [[FirstTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
+        strategy = [[SphereIntersectionTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     else {
         self.switchAlg2.on = YES;
@@ -151,7 +151,7 @@
         self.switchAlg1.on = YES;
         self.switchAlg2.on = NO;
         
-        strategy = [[FirstTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
+        strategy = [[SphereIntersectionTrilateratingStrategy alloc] initWithFloor:self.beaconView.floor];
     }
     [self.beaconView.floor useAnotherCalculationStrategy:strategy];
 

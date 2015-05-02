@@ -127,16 +127,12 @@ CGPoint touchLocation;
     
     [self drawBeacons];
     
-    /*if ([self.floor.algorithm isKindOfClass:[RayTracingTrilateratingStrategy class]] && [DrawingOptions sharedData].isDrawingUserBoundingBoxes) {
-        [self drawBoundingBox];
-    }*/
-    
     if ([DrawingOptions sharedData].isDrawingUserTrace) {
         [self drawUserTrace];
     }
     
     if (self.floor.canDefineUserPosition) {
-        [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition]];
+        [self.userIcon drawAtPoint:[self convertUserPosition:self.floor.userPosition.position]];
         
         if ([DrawingOptions sharedData].isDrawingUserProximity) {
             [self drawUserProximity];
@@ -222,15 +218,6 @@ CGPoint touchLocation;
 }
 
 
-/*-(void)drawBoundingBox {
-    if (self.floor.canDefineUserPosition) {
-        [[UIColor colorWithRed:200.0/255.0 green:255.0/255.0 blue:190.0/255.0 alpha:0.4] setFill];
-        UIBezierPath *boundingPath = [UIBezierPath bezierPathWithRect:[self convertRect:self.floor.boundingRectangle]];
-        [boundingPath fill];
-    }
-}*/
-
-
 -(void)drawUserTrace {
     if (self.floor.userPositions.count > 1) {
         [[UIColor colorWithRed:205.0/255.0 green:205.0/255.0 blue:205.0/255.5 alpha:1] setStroke];
@@ -252,7 +239,7 @@ CGPoint touchLocation;
 
 -(void)drawUserProximity {
     [[UIColor colorWithRed:30.0/255.0 green:90.0/255.0 blue:200.0/255.0 alpha:0.4] setFill];
-     UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userRect]];
+     UIBezierPath *userProxPath = [UIBezierPath bezierPathWithOvalInRect:[self convertRect:self.floor.userProximityRect]];
      [userProxPath fill];
 }
 

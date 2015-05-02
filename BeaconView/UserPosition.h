@@ -15,4 +15,7 @@
 
 -(id)initWithPosition:(CGPoint) point;
 
+-(double)x;
+-(double)y;
+
 @end

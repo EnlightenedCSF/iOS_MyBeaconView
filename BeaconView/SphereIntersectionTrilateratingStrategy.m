@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 CSF. All rights reserved.
 //
 
-#import "FirstTrilateratingStrategy.h"
+#import "SphereIntersectionTrilateratingStrategy.h"
 #import "Floor.h"
 #import "RoomBeacon.h"
 #import "BeaconDefaults.h"
 #import "UserPosition.h"
 
-@implementation FirstTrilateratingStrategy
+@implementation SphereIntersectionTrilateratingStrategy
 
 -(void)calculateUserPositionUsingBeacons:(NSMutableArray *)beacons {
     
@@ -143,12 +143,13 @@
         CGPoint newPos = CGPointMake(self.floor.userPosition.x * k + (1-k) * p.x,
                                      self.floor.userPosition.y * k + (1-k) * p.y);
         
-        self.floor.userPosition = newPos;
-        [self.floor.userPositions addObject:[[UserPosition alloc] initWithPosition:newPos]];
+        self.floor.userPosition = [[UserPosition alloc] initWithPosition: newPos];
+        [self.floor.userPositions addObject:self.floor.userPosition];
     }
     else {
-        self.floor.userPosition = p;
-        [self.floor.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
+        self.floor.userPosition = [[UserPosition alloc] initWithPosition:p];
+        [self.floor.userPositions addObject:self.floor.userPosition];
+        //[self.floor.userPositions addObject:[[UserPosition alloc] initWithPosition:p]];
     }
 }
 

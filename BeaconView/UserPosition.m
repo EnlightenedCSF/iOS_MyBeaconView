@@ -18,4 +18,12 @@
     return self;
 }
 
+-(double)x {
+    return _position.x;
+}
+
+-(double)y {
+    return _position.y;
+}
+
 @end

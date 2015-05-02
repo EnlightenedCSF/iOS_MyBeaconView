@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AbstractTrilateratingStrategy.h"
 
-@interface FirstTrilateratingStrategy : AbstractTrilateratingStrategy
+@interface SphereIntersectionTrilateratingStrategy : AbstractTrilateratingStrategy
 
 -(void)calculateUserPositionUsingBeacons:(NSMutableArray *)beacons;
 

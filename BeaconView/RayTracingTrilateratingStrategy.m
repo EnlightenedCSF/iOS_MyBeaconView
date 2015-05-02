@@ -43,7 +43,6 @@
             yMax = y+r;
         }
     }
-    self.floor.boundingRectangle = CGRectMake(xMin, yMin, xMax - xMin, yMax - yMin);
     
     double xMinUser = 1e10;
     double xMaxUser = -1e10;
@@ -71,10 +70,9 @@
             }
         }
     }
-    self.floor.userRect = CGRectMake(xMinUser, yMinUser, xMaxUser - xMinUser, yMaxUser - yMinUser);
-    self.floor.userPosition = CGPointMake((xMinUser + xMaxUser)/2.0, (yMinUser +yMaxUser)/2.0);
-    self.floor.userProximity = (xMaxUser - xMinUser  < yMaxUser - yMinUser) ? (xMaxUser - xMinUser)/2.0 : (yMaxUser - yMinUser)/2.0;
-    [self.floor.userPositions addObject:[[UserPosition alloc] initWithPosition:self.floor.userPosition]];
+    self.floor.userProximityRect = CGRectMake(xMinUser, yMinUser, xMaxUser - xMinUser, yMaxUser - yMinUser);
+    self.floor.userPosition = [[UserPosition alloc] initWithPosition:CGPointMake((xMinUser + xMaxUser)/2.0, (yMinUser +yMaxUser)/2.0)];
+    [self.floor.userPositions addObject:self.floor.userPosition];
 }
 
 -(BOOL)isRay:(CGPoint)ray IntersectsWithBeaconAccuracyZone:(RoomBeacon *)beacon {
