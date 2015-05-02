@@ -7,73 +7,92 @@
 //
 
 #import "DrawingOptionsTableViewController.h"
+#import "DrawingOptions.h"
+#import "BeaconDefaults.h"
 
 @interface DrawingOptionsTableViewController ()
+
+@property (weak, nonatomic) IBOutlet UISwitch *switchGrid;
+@property (weak, nonatomic) IBOutlet UIStepper *stepperGridCellSize;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldGridCellSize;
+
+@property (weak, nonatomic) IBOutlet UISwitch *switchUserProx;
+@property (weak, nonatomic) IBOutlet UISwitch *switchUserTrace;
+
+
+@property (weak, nonatomic) IBOutlet UISwitch *switchBeaconLabels;
+@property (weak, nonatomic) IBOutlet UISwitch *switchBeaconsAccuracy;
+
+@property (weak, nonatomic) IBOutlet UISwitch *switchFilterAccuracy;
+@property (weak, nonatomic) IBOutlet UIStepper *stepperAccuracyK;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldAccuracyK;
+
+@property (weak, nonatomic) IBOutlet UISwitch *switchFilterUserPosition;
+@property (weak, nonatomic) IBOutlet UIStepper *stepperUserPositionK;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldUserPositionK;
 
 @end
 
 @implementation DrawingOptionsTableViewController
 
+NSNumberFormatter *numberFormatter;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    numberFormatter = [NSNumberFormatter new];
+    numberFormatter.roundingIncrement = [NSNumber numberWithDouble:0.1];
+    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
 }
 
-#pragma mark - Table view data source
+#pragma mark - Switches and steppers
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (IBAction)toggleGrid:(UISwitch *)sender {
+    [DrawingOptions sharedData].isDrawingGrid = self.switchGrid.isOn;
+    [self.textFieldGridCellSize setEnabled:self.switchGrid.isOn];
+    [self.stepperGridCellSize setEnabled:self.switchGrid.isOn];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 7;
+- (IBAction)gridCellSizeChanged:(id)sender {
+    [self.textFieldGridCellSize setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:0.5*self.stepperGridCellSize.value]]];
+    [DrawingOptions sharedData].gridCellSize = 0.5 * self.stepperGridCellSize.value;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+- (IBAction)toggleUserTrace:(id)sender {
+    [DrawingOptions sharedData].isDrawingUserTrace = self.switchUserTrace.isOn;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (IBAction)toggleUserProximity:(id)sender {
+    [DrawingOptions sharedData].isDrawingUserProximity = self.switchUserProx.isOn;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (IBAction)toggleBeaconsAccuracy:(id)sender {
+    [DrawingOptions sharedData].isDrawingBeaconAccuracyRadiuses = self.switchBeaconsAccuracy.isOn;
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+- (IBAction)toggleBeaconLabels:(id)sender {
+    [DrawingOptions sharedData].isDrawingBeaconLabels = self.switchBeaconLabels.isOn;
 }
-*/
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)toggleAccuracyFiltering:(id)sender {
+    [BeaconDefaults sharedData].isFilteringAccuracy = self.switchFilterAccuracy.isOn;
+    [self.stepperAccuracyK setEnabled:self.switchFilterAccuracy.isOn];
+    [self.textFieldAccuracyK setEnabled:self.switchFilterAccuracy.isOn];
 }
-*/
+
+- (IBAction)filterAccuracyKChanged:(id)sender {
+    [self.textFieldAccuracyK setText:[numberFormatter stringFromNumber:[NSNumber numberWithDouble:self.stepperAccuracyK.value / 10.0]]];
+    [BeaconDefaults sharedData].kalmanKforAccuracy = self.stepperAccuracyK.value / 10.0;
+}
+
+- (IBAction)toggleUserPosFiltering:(id)sender {
+    [BeaconDefaults sharedData].isFilteringUserPosition = self.switchFilterUserPosition.isOn;
+    [self.stepperUserPositionK setEnabled:self.switchFilterUserPosition.isOn];
+    [self.textFieldUserPositionK setEnabled:self.switchFilterUserPosition.isOn];
+}
+
+- (IBAction)filterUserPosKChanged:(id)sender {
+    [self.textFieldUserPositionK setText:[numberFormatter stringFromNumber:[NSNumber numberWithDouble:self.stepperUserPositionK.value / 10.0]]];
+    [BeaconDefaults sharedData].kalmanKforUser = self.stepperUserPositionK.value / 10.0;
+}
 
 @end
